@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>360SPRNG — The Frat</title>
+<meta name="description" content="Join the 360SPRNG community.">
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--bone:#F2EDE4;--indigo:#5C00FF;--gold:#C9922A;--gray:#141414;--gray-mid:#1E1E1E;--anton:'Anton',sans-serif;--next-up:'Next Up Black','Anton',sans-serif;}
+@font-face{font-family:'Next Up Black';src:url('./fonts/NextUpBlack.woff2') format('woff2'),url('./fonts/NextUpBlack.woff') format('woff');font-weight:900;font-style:normal;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--bone);font-family:var(--next-up);overflow-x:hidden;cursor:crosshair;}
+a{color:inherit;text-decoration:none;}
+::selection{background:var(--indigo);color:var(--bone);}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.035;pointer-events:none;z-index:9998;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:300;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;}
+.nav-logo{font-family:var(--anton);font-size:1rem;letter-spacing:0.18em;color:var(--bone);mix-blend-mode:difference;}
+.menu-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:6px;z-index:600;position:relative;}
+.menu-btn span{display:block;width:26px;height:1.5px;background:var(--bone);transition:transform 0.3s ease,opacity 0.3s ease;}
+.menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.menu-btn.open span:nth-child(2){opacity:0;}
+.menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+
+/* DRAWER */
+.menu-scrim{position:fixed;inset:0;background:rgba(10,10,10,0.7);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.35s;}
+.menu-scrim.open{opacity:1;pointer-events:all;}
+.menu-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,88vw);background:var(--black);border-left:1px solid rgba(242,237,228,0.07);z-index:500;transform:translateX(100%);transition:transform 0.42s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:5.5rem 2.5rem 3rem;overflow-y:auto;}
+.menu-drawer.open{transform:translateX(0);}
+.drawer-nav{display:flex;flex-direction:column;flex:1;}
+.drawer-link{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;border-bottom:1px solid rgba(242,237,228,0.06);transition:padding-left 0.2s;}
+.drawer-link:hover{padding-left:0.5rem;}
+.drawer-link-meta{display:flex;flex-direction:column;}
+.drawer-link-type{font-size:0.5rem;letter-spacing:0.3em;text-transform:uppercase;opacity:0.25;margin-bottom:0.2rem;}
+.drawer-link-name{font-family:var(--anton);font-size:clamp(1.5rem,5vw,2.4rem);text-transform:uppercase;line-height:1;transition:color 0.2s;}
+.drawer-link:hover .drawer-link-name{color:var(--indigo);}
+.drawer-link-arr{font-size:1rem;opacity:0.2;transition:opacity 0.2s,transform 0.2s;}
+.drawer-link:hover .drawer-link-arr{opacity:1;transform:translate(4px,-4px);}
+.drawer-footer{padding-top:2.5rem;border-top:1px solid rgba(242,237,228,0.06);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;}
+.drawer-footer-links{display:flex;flex-wrap:wrap;gap:1.25rem 2rem;}
+.drawer-footer-link{font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.25;transition:opacity 0.2s;}
+.drawer-footer-link:hover{opacity:0.8;}
+.drawer-copy{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0.1;}
+
+/* TICKER */
+.nl-bar{display:block;overflow:hidden;border-bottom:1px solid rgba(242,237,228,0.07);padding:0.75rem 0;background:var(--black);text-decoration:none;}
+.nl-bar.fixed{position:fixed;top:0;left:0;right:0;z-index:299;}
+.nl-track{display:flex;animation:nl-scroll 22s linear infinite;white-space:nowrap;align-items:center;}
+.nl-bar:hover .nl-track{animation-play-state:paused;}
+.nl-item{display:flex;align-items:center;gap:20px;padding-right:20px;flex-shrink:0;}
+.nl-text{font-family:var(--anton);font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--bone);opacity:0.4;}
+.nl-text.accent{color:var(--gold);opacity:0.85;}
+.nl-dot{width:3px;height:3px;background:var(--indigo);border-radius:50%;flex-shrink:0;opacity:0.5;}
+@keyframes nl-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* SHARED */
+.s-label{font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;opacity:0.25;margin-bottom:3rem;display:flex;align-items:center;gap:1rem;}
+.s-label::after{content:'';flex:1;height:1px;background:rgba(242,237,228,0.08);}
+.s-title{font-family:var(--anton);font-size:clamp(2.8rem,6.5vw,6rem);line-height:0.93;text-transform:uppercase;letter-spacing:-0.01em;}
+.fade{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.fade.on{opacity:1;transform:none;}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(242,237,228,0.05);padding:2.75rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:var(--gray);flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:var(--anton);font-size:1.3rem;letter-spacing:0.12em;}
+.footer-links{display:flex;gap:2rem;list-style:none;flex-wrap:wrap;}
+.footer-links a{font-size:0.56rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.2;transition:opacity 0.2s;}
+.footer-links a:hover{opacity:1;}
+.footer-copy{font-size:0.54rem;letter-spacing:0.1em;opacity:0.12;text-transform:uppercase;}
+@media(max-width:768px){nav{padding:1.25rem 1.5rem;}footer{flex-direction:column;text-align:center;}.footer-links{justify-content:center;}}
+
+.nl-bar{position:fixed;top:0;left:0;right:0;z-index:350;}
+nav{top:38px;}
+.page-wrap{padding:10rem 2.5rem 6rem;}
+.community-wrap{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+.community-body{font-size:0.82rem;line-height:1.95;opacity:0.4;letter-spacing:0.025em;margin:2rem 0 2.5rem;}
+.community-links{display:flex;flex-direction:column;gap:1px;background:rgba(242,237,228,0.05);}
+.c-link{background:var(--black);padding:1.35rem 1.5rem;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;}
+.c-link:hover{background:var(--gray);}
+.c-link-type{font-size:0.52rem;letter-spacing:0.25em;text-transform:uppercase;opacity:0.3;}
+.c-link-name{font-family:var(--anton);font-size:1.05rem;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.12rem;}
+.c-link-arr{font-size:1rem;opacity:0.2;transition:opacity 0.2s,transform 0.2s;}
+.c-link:hover .c-link-arr{opacity:1;transform:translateX(4px);}
+/* RING + SPINNING LOGO */
+.community-vis{display:flex;align-items:center;justify-content:center;position:relative;width:320px;height:320px;}
+.c-ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(92,0,255,0.2);animation:spin 25s linear infinite;display:flex;align-items:center;justify-content:center;}
+.c-ring::before{content:'';position:absolute;inset:28px;border-radius:50%;border:1px solid rgba(92,0,255,0.08);}
+.c-logo-spin{width:110px;height:110px;object-fit:contain;filter:brightness(0) invert(1);opacity:0.88;animation:spin-logo 18s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes spin-logo{to{transform:rotate(-360deg);}}
+@media(max-width:768px){.community-wrap{grid-template-columns:1fr;gap:3.5rem;}.community-vis{display:none;}}
+</style>
+</head>
+<body>
+<a class="nl-bar" href="newsletter.html" aria-label="Join the 360SPRNG newsletter — 10% off your first order">
+ <div class="nl-track">
+  <div class="nl-item"><span class="nl-text">join the frat</span><div class="nl-dot"></div><span class="nl-text accent">10% off your first order</span><div class="nl-dot"></div><span class="nl-text">sign up now</span><div class="nl-dot"></div><span class="nl-text">live beyond life</span><div class="nl-dot"></div><span class="nl-text">360SPRNG</span><div class="nl-dot"></div><span class="nl-text accent">newsletter</span><div class="nl-dot"></div></div>
+  <div class="nl-item"><span class="nl-text">join the frat</span><div class="nl-dot"></div><span class="nl-text accent">10% off your first order</span><div class="nl-dot"></div><span class="nl-text">sign up now</span><div class="nl-dot"></div><span class="nl-text">live beyond life</span><div class="nl-dot"></div><span class="nl-text">360SPRNG</span><div class="nl-dot"></div><span class="nl-text accent">newsletter</span><div class="nl-dot"></div></div>
+  <div class="nl-item"><span class="nl-text">join the frat</span><div class="nl-dot"></div><span class="nl-text accent">10% off your first order</span><div class="nl-dot"></div><span class="nl-text">sign up now</span><div class="nl-dot"></div><span class="nl-text">live beyond life</span><div class="nl-dot"></div><span class="nl-text">360SPRNG</span><div class="nl-dot"></div><span class="nl-text accent">newsletter</span><div class="nl-dot"></div></div>
+ </div>
+</a>
+<nav>
+ <a href="index.html" class="nav-logo">360SPRNG</a>
+ <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="open menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+ </button>
+</nav>
+<div class="menu-scrim" id="menuScrim" onclick="closeMenu()"></div>
+<aside class="menu-drawer" id="menuDrawer" role="dialog" aria-modal="true" aria-label="Navigation">
+ <nav class="drawer-nav">
+  <a href="index.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">home</div><div class="drawer-link-name">360SPRNG</div></div><span class="drawer-link-arr"></span></a>
+  <a href="store.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">shop</div><div class="drawer-link-name">store</div></div><span class="drawer-link-arr"></span></a>
+  <a href="lookbook.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">editorial</div><div class="drawer-link-name">lookbook</div></div><span class="drawer-link-arr"></span></a>
+  <a href="community.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">join</div><div class="drawer-link-name">the frat</div></div><span class="drawer-link-arr"></span></a>
+  <a href="about.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">brand</div><div class="drawer-link-name">about</div></div><span class="drawer-link-arr"></span></a>
+  <a href="newsletter.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">10% off</div><div class="drawer-link-name">newsletter</div></div><span class="drawer-link-arr"></span></a>
+ </nav>
+ <div class="drawer-footer">
+  <div class="drawer-footer-links">
+   <a href="https://instagram.com/360SPRNG" class="drawer-footer-link" target="_blank" rel="noopener">instagram</a>
+   <a href="https://linktr.ee/360SPRNG" class="drawer-footer-link" target="_blank" rel="noopener">linktree</a>
+   <a href="https://chat.whatsapp.com/Brltt0B1Di08Zi9uyXCXz3" class="drawer-footer-link" target="_blank" rel="noopener">whatsapp</a>
+  </div>
+  <span class="drawer-copy">© 2026 360SPRNG</span>
+ </div>
+</aside>
+<div class="page-wrap">
+ <div class="community-wrap">
+  <div>
+   <div class="s-label fade">the frat</div>
+   <h1 class="s-title fade">join the<br>circle</h1>
+   <p class="community-body fade">not a fanbase. a community of people who already chose themselves. the frat is where the brand lives between drops.</p>
+   <div class="community-links fade">
+    <a href="https://chat.whatsapp.com/Brltt0B1Di08Zi9uyXCXz3?mode=gi_t" class="c-link" target="_blank" rel="noopener">
+     <div><div class="c-link-type">community</div><div class="c-link-name">whatsapp</div></div><span class="c-link-arr"></span>
+    </a>
+    <a href="https://discord.gg/Qa6dq3XJ" class="c-link" target="_blank" rel="noopener">
+     <div><div class="c-link-type">server</div><div class="c-link-name">discord</div></div><span class="c-link-arr"></span>
+    </a>
+    <a href="https://instagram.com/360SPRNG" class="c-link" target="_blank" rel="noopener">
+     <div><div class="c-link-type">main</div><div class="c-link-name">instagram</div></div><span class="c-link-arr"></span>
+    </a>
+    <a href="https://linktr.ee/360SPRNG" class="c-link" target="_blank" rel="noopener">
+     <div><div class="c-link-type">all links</div><div class="c-link-name">linktree</div></div><span class="c-link-arr"></span>
+    </a>
+   </div>
+  </div>
+  <div class="community-vis fade">
+   <div class="c-ring">
+    <img class="c-logo-spin" src="./assets/press/white_logo.png" alt="360SPRNG">
+   </div>
+  </div>
+ </div>
+</div>
+<footer>
+ <div class="footer-logo">360SPRNG</div>
+ <ul class="footer-links">
+  <li><a href="store.html">store</a></li>
+  <li><a href="lookbook.html">lookbook</a></li>
+  <li><a href="community.html">the frat</a></li>
+  <li><a href="about.html">about</a></li>
+  <li><a href="newsletter.html">newsletter</a></li>
+  <li><a href="https://instagram.com/360SPRNG" target="_blank" rel="noopener">instagram</a></li>
+ </ul>
+ <span class="footer-copy">© 2026 360SPRNG</span>
+</footer>
+<script>
+function toggleMenu(){
+ const btn=document.getElementById('menuBtn'),drawer=document.getElementById('menuDrawer'),scrim=document.getElementById('menuScrim');
+ const opening=!drawer.classList.contains('open');
+ btn.classList.toggle('open');drawer.classList.toggle('open');scrim.classList.toggle('open');
+ document.body.style.overflow=opening?'hidden':'';
+ btn.setAttribute('aria-expanded',opening);
+}
+function closeMenu(){
+ document.getElementById('menuBtn').classList.remove('open');
+ document.getElementById('menuDrawer').classList.remove('open');
+ document.getElementById('menuScrim').classList.remove('open');
+ document.body.style.overflow='';
+ document.getElementById('menuBtn').setAttribute('aria-expanded','false');
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+</script>
+<script>
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:0.08});
+document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
