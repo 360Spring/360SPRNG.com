@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>360SPRNG — Coming Soon</title>
+<meta name="description" content="360SPRNG. Live Beyond Life.">
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#0A0A0A;--bone:#F2EDE4;--indigo:#5C00FF;--gold:#C9922A;--anton:'Anton',sans-serif;--next-up:'Next Up Black','Anton',sans-serif;}
+  @font-face{font-family:'Next Up Black';src:url('./fonts/NextUpBlack.woff2') format('woff2'),url('./fonts/NextUpBlack.woff') format('woff');font-weight:900;font-style:normal;font-display:swap;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--black);color:var(--bone);font-family:var(--next-up);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;overflow:hidden;cursor:crosshair;}
+  ::selection{background:var(--indigo);color:var(--bone);}
+
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.035;pointer-events:none;z-index:0;}
+
+
+
+  .content{position:relative;z-index:1;max-width:520px;width:100%;}
+
+  .logo{font-family:var(--anton);font-size:1rem;letter-spacing:0.22em;text-transform:uppercase;opacity:0.5;margin-bottom:4rem;}
+
+  .headline{font-family:var(--anton);font-size:clamp(2.8rem,9vw,6rem);line-height:0.92;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:1.5rem;}
+  .headline span{color:var(--indigo);}
+
+  /* ── LAUNCH DATE ─────────────────────────────────────────────────────────
+     Change the date below to your actual launch date.
+     Format: any readable date string e.g. "MAY 30" or "30.05.2026"
+  ──────────────────────────────────────────────────────────────────────── */
+  .launch-date{font-size:0.62rem;letter-spacing:0.32em;text-transform:uppercase;opacity:0.35;margin-bottom:3.5rem;}
+  .launch-date span{color:var(--gold);opacity:1;}
+
+  .sub{font-size:0.72rem;line-height:1.85;opacity:0.35;letter-spacing:0.04em;margin-bottom:3rem;max-width:340px;margin-left:auto;margin-right:auto;}
+
+  .email-form{display:flex;flex-direction:column;gap:0.75rem;width:100%;max-width:380px;margin:0 auto;}
+  .email-input{background:rgba(242,237,228,0.05);border:1px solid rgba(242,237,228,0.12);color:var(--bone);font-family:var(--next-up);font-size:0.82rem;letter-spacing:0.04em;padding:1rem 1.25rem;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;border-radius:0;width:100%;}
+  .email-input:focus{border-color:rgba(92,0,255,0.6);}
+  .email-input::placeholder{opacity:0.25;}
+  .email-submit{background:var(--indigo);border:none;color:var(--bone);font-family:var(--next-up);font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:opacity 0.2s;width:100%;}
+  .email-submit:hover{opacity:0.85;}
+
+  .confirm{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--indigo);opacity:0;transition:opacity 0.4s;margin-top:0.5rem;}
+  .confirm.show{opacity:1;}
+
+  .logo-bg{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;}
+  .logo-spin-img{width:clamp(280px,55vw,600px);height:clamp(280px,55vw,600px);object-fit:contain;opacity:0.06;animation:logo-spin 22s linear infinite;}
+  @keyframes logo-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .footer-line{margin-top:4rem;font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;opacity:0.15;}
+
+  @media(max-width:480px){
+    .headline{font-size:clamp(2.4rem,12vw,3.5rem);}
+  }
+</style>
+</head>
+<body>
+  
+
+  <div class="logo-bg" aria-hidden="true">
+    <img src="./assets/press/white_logo.png" alt="" class="logo-spin-img">
+  </div>
+
+  <div class="content">
+    <div class="logo">360SPRNG</div>
+
+    <h1 class="headline">
+      something<br>is <span>coming.</span>
+    </h1>
+
+    <!-- ── LAUNCH DATE — edit the date text below ── -->
+    <p class="launch-date">opening <span id="launchDateText">soon</span></p>
+
+    <p class="sub">leave your email and be the first to know when the site goes live. no spam. just the drop.</p>
+
+    <div class="email-form">
+      <input class="email-input" type="email" id="emailInput" placeholder="your@email.com" autocomplete="email">
+      <button class="email-submit" onclick="submitEmail()">notify me</button>
+      <div class="confirm" id="confirm">you're on the list.</div>
+    </div>
+
+    <div class="footer-line">© 2026 360SPRNG · live beyond life</div>
+  </div>
+
+  <script>
+    // ── LAUNCH DATE ────────────────────────────────────────────────────────
+    // Change this to your actual launch date — it shows on the page
+    const LAUNCH_DATE = 'soon'; // e.g. 'May 30' or '30.05.2026' or 'this week'
+    document.getElementById('launchDateText').textContent = LAUNCH_DATE;
+
+    // ══════════════════════════════════════════════════════════════════════
+    // EMAIL PLATFORM — BREVO (recommended, free, reliable)
+    //
+    // SETUP (takes 5 min):
+    // 1. Go to brevo.com — create a free account
+    // 2. Go to Contacts > Forms > Create a form
+    // 3. Copy the form ID from the form URL (looks like: id=123456)
+    // 4. Paste it below as BREVO_LIST_ID
+    // 5. Go to your profile > SMTP & API > API Keys > Generate API key
+    // 6. Paste it below as BREVO_API_KEY
+    //
+    // Emails will also always save locally to localStorage as backup.
+    // ══════════════════════════════════════════════════════════════════════
+    const BREVO_API_KEY = ''; // paste your Brevo API key here
+    const BREVO_LIST_ID = 0;  // paste your Brevo list ID here (a number)
+
+    async function submitEmail() {
+      const email = document.getElementById('emailInput').value.trim();
+      const input = document.getElementById('emailInput');
+      if (!email || !email.includes('@')) {
+        input.style.borderColor = 'rgba(255,68,68,0.6)';
+        return;
+      }
+      input.style.borderColor = '';
+
+      // Always save locally as backup
+      const emails = JSON.parse(localStorage.getItem('360_waitlist') || '[]');
+      if (!emails.includes(email)) { emails.push(email); localStorage.setItem('360_waitlist', JSON.stringify(emails)); }
+
+      // Send to Brevo if configured
+      if (BREVO_API_KEY && BREVO_LIST_ID) {
+        try {
+          await fetch('https://api.brevo.com/v3/contacts', {
+            method: 'POST',
+            headers: {
+              'accept': 'application/json',
+              'content-type': 'application/json',
+              'api-key': BREVO_API_KEY
+            },
+            body: JSON.stringify({
+              email: email,
+              listIds: [BREVO_LIST_ID],
+              updateEnabled: true,
+              attributes: { SOURCE: '360SPRNG coming soon' }
+            })
+          });
+        } catch(e) {
+          // Silent fail — email already saved locally
+        }
+      }
+
+      input.value = '';
+      document.getElementById('confirm').classList.add('show');
+    }
+
+    document.getElementById('emailInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitEmail();
+    });
+  </script>
+</body>
+</html>
