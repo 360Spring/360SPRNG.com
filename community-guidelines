@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Guidelines — 360SPRNG</title>
+  <meta name="description" content="Community guidelines governing participation in all 360SPRNG spaces." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0A0A0A;
+      --bone: #F2EDE4;
+      --indigo: #5C00FF;
+      --gold: #C9922A;
+      --dim: rgba(242, 237, 228, 0.35);
+      --divider: rgba(242, 237, 228, 0.1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--black);
+      color: var(--bone);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      background: var(--black);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .header-brand {
+      font-family: 'Anton', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.12em;
+      color: var(--bone);
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .header-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 160px 40px 80px;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--bone);
+      margin-bottom: 40px;
+    }
+
+    .hero-meta {
+      display: flex;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .meta-label {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .meta-value {
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      color: var(--bone);
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: sticky;
+      top: 61px;
+      height: calc(100vh - 61px);
+      overflow-y: auto;
+      padding: 48px 32px 48px 40px;
+      border-right: 1px solid var(--divider);
+    }
+
+    .sidebar-label {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-bottom: 20px;
+    }
+
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar nav a {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--dim);
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      text-transform: lowercase;
+    }
+
+    .sidebar nav a:hover {
+      color: var(--bone);
+      border-bottom-color: var(--divider);
+    }
+
+    .sidebar nav a.active {
+      color: var(--gold);
+    }
+
+    .sidebar-divider {
+      margin: 24px 0;
+      border: none;
+      border-top: 1px solid var(--divider);
+    }
+
+    .sidebar-back {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .sidebar-back:hover {
+      color: var(--bone);
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      padding: 48px 80px 120px 64px;
+      max-width: 780px;
+    }
+
+    /* ── CLAUSE ── */
+    .clause {
+      padding: 56px 0;
+      border-bottom: 1px solid var(--divider);
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .clause:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    .clause:nth-child(2) {
+      animation-delay: 0.10s;
+    }
+
+    .clause:nth-child(3) {
+      animation-delay: 0.15s;
+    }
+
+    .clause:nth-child(4) {
+      animation-delay: 0.20s;
+    }
+
+    .clause:nth-child(5) {
+      animation-delay: 0.25s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .clause-header {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .clause-number {
+      font-family: 'Anton', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .clause-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(20px, 3vw, 28px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bone);
+      line-height: 1;
+    }
+
+    .clause p {
+      color: rgba(242, 237, 228, 0.75);
+      margin-bottom: 16px;
+      max-width: 620px;
+    }
+
+    .clause p:last-child {
+      margin-bottom: 0;
+    }
+
+    .clause p strong {
+      color: var(--bone);
+      font-weight: normal;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── SPACES TAG ── */
+    .spaces {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .space-tag {
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201, 146, 42, 0.3);
+      padding: 4px 10px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 48px 40px;
+      border-top: 1px solid var(--divider);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      font-family: 'Anton', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bone);
+    }
+
+    .footer-copy {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--black);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--divider);
+      border-radius: 2px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 16px 20px;
+      }
+
+      .hero {
+        padding: 120px 20px 56px;
+      }
+
+      .hero-meta {
+        gap: 24px;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .content {
+        padding: 32px 20px 80px;
+      }
+
+      .clause {
+        padding: 40px 0;
+      }
+
+      footer {
+        padding: 32px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <a href="/" class="header-brand">360SPRNG</a>
+    <span class="header-label">community guidelines</span>
+  </header>
+
+  <div class="hero">
+    <p class="hero-eyebrow">community · 360sprng.com/community-guidelines</p>
+    <h1 class="hero-title">community<br>guidelines</h1>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">spaces covered</span>
+        <span class="meta-value">whatsapp · discord · instagram</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">violations</span>
+        <span class="meta-value">immediate removal</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <aside class="sidebar">
+      <p class="sidebar-label">contents</p>
+      <nav>
+        <a href="#s01">01 — scope</a>
+        <a href="#s02">02 — prohibited conduct</a>
+        <a href="#s03">03 — consequences</a>
+        <a href="#s04">04 — reporting</a>
+        <a href="#s05">05 — moderation authority</a>
+      </nav>
+      <hr class="sidebar-divider" />
+      <a href="/terms" class="sidebar-back">← terms of use</a>
+    </aside>
+
+    <main class="content">
+
+      <section class="clause" id="s01">
+        <div class="clause-header">
+          <span class="clause-number">01</span>
+          <h2 class="clause-title">scope</h2>
+        </div>
+        <div class="spaces">
+          <span class="space-tag">whatsapp</span>
+          <span class="space-tag">discord</span>
+          <span class="space-tag">instagram</span>
+        </div>
+        <p>these guidelines apply to all 360SPRNG community spaces — including our whatsapp community, discord server,
+          and instagram comment sections — and to all participants regardless of when they joined, what they have
+          purchased, or their standing within the community.</p>
+        <p>participation in any 360SPRNG space is a privilege, not a right. violation of any guideline in this document
+          is grounds for immediate removal. access can be revoked at any time without notice or explanation.</p>
+      </section>
+
+      <section class="clause" id="s02">
+        <div class="clause-header">
+          <span class="clause-number">02</span>
+          <h2 class="clause-title">prohibited conduct</h2>
+        </div>
+        <p>the following are not permitted in any 360SPRNG community space.</p>
+        <p>do not harass anyone. this includes targeting individuals with repeated, unwanted, or hostile communication —
+          including in direct messages initiated through our spaces.</p>
+        <p>do not post hate speech. content that attacks or dehumanises individuals or groups on the basis of race,
+          ethnicity, religion, gender, sexuality, nationality, or any other characteristic will result in immediate
+          removal.</p>
+        <p>do not spam. unsolicited repetitive messages, bulk posting, or anything designed to disrupt the space is not
+          welcome.</p>
+        <p>do not self-promote. this is not a marketplace. promoting your own brand, product, service, or platform
+          without explicit permission from 360SPRNG is not permitted.</p>
+        <p>do not impersonate. do not represent yourself as 360SPRNG, a member of the team, or any other individual in a
+          misleading way.</p>
+        <p>do not reproduce or distribute 360SPRNG graphics, designs, or brand assets without explicit authorisation.
+        </p>
+        <p>do not spread misinformation about 360SPRNG, its products, drops, or team.</p>
+        <p>do not share content that violates ghanaian law or the laws of the jurisdiction in which you are located.</p>
+      </section>
+
+      <section class="clause" id="s03">
+        <div class="clause-header">
+          <span class="clause-number">03</span>
+          <h2 class="clause-title">consequences</h2>
+        </div>
+        <p>violation of any guideline results in immediate removal from the relevant 360SPRNG community space. there are
+          no warnings. there is no appeals process.</p>
+        <p>removal from one space does not automatically result in removal from others, but 360SPRNG reserves the right
+          to remove an individual from all community spaces simultaneously where the violation warrants it.</p>
+        <p>removal from a 360SPRNG community space does not constitute a ban from third-party platforms such as
+          whatsapp, discord, or instagram, which are governed by their own terms of service.</p>
+        <p>where we believe a violation constitutes a breach of applicable law, we reserve the right to report the
+          conduct to the relevant platform or authorities.</p>
+      </section>
+
+      <section class="clause" id="s04">
+        <div class="clause-header">
+          <span class="clause-number">04</span>
+          <h2 class="clause-title">reporting</h2>
+        </div>
+        <p>if you witness a violation of these guidelines in any 360SPRNG community space, report it via email at
+          studio@360sprng.com.</p>
+        <p>include the relevant community space, a description of the incident, and any supporting evidence where
+          possible. all reports are reviewed by 360SPRNG directly.</p>
+      </section>
+
+      <section class="clause" id="s05">
+        <div class="clause-header">
+          <span class="clause-number">05</span>
+          <h2 class="clause-title">moderation authority</h2>
+        </div>
+        <p>360SPRNG moderates all community spaces at its sole discretion. moderation decisions are final.</p>
+        <p>these guidelines may be updated at any time. continued participation in any 360SPRNG community space
+          following an update constitutes acceptance of the revised guidelines. current guidelines are always available
+          at 360sprng.com/community-guidelines.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <span class="footer-brand">360SPRNG™</span>
+    <span class="footer-copy">live beyond life · ghana · all rights reserved</span>
+  </footer>
+
+  <script>
+    const clauses = document.querySelectorAll('.clause');
+    const navLinks = document.querySelectorAll('.sidebar nav a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(link => link.classList.remove('active'));
+          const id = entry.target.getAttribute('id');
+          const active = document.querySelector(`.sidebar nav a[href="#${id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+
+    clauses.forEach(c => observer.observe(c));
+  </script>
+
+  <script type="text/javascript">
+    window.omnisend = window.omnisend || [];
+    omnisend.push(["brandID", "6a0a57539c08a1ea4981408a"]);
+    omnisend.push(["track", "$pageViewed"]);
+    !function () {
+      var e = document.createElement("script");
+      e.type = "text/javascript", e.async = !0,
+        e.src = "https://omnisnippet1.com/inshop/launcher-v2.js";
+      var t = document.getElementsByTagName("script")[0];
+      t.parentNode.insertBefore(e, t)
+    }();
+  </script>
+
+</body>
+
+</html>
