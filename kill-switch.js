@@ -5,7 +5,7 @@
 // SITE ONLINE  (normal mode):       const SITE_LIVE = true;
 // ══════════════════════════════════════════════════════════════════════════
 
-const SITE_LIVE = false;
+const SITE_LIVE = true;
 
 (function() {
   if (!SITE_LIVE) {
