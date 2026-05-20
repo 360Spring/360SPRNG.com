@@ -12,7 +12,8 @@
   <meta name="description"
     content="360SPRNG — Ghanaian streetwear brand built for African creatives. Limited drops. Live Beyond Life.">
   <meta name="keywords"
-    content="Ghanaian streetwear, African streetwear, limited drop clothing, African creative brand, Ghana fashion, 360SPRNG, BEYOND I collection">
+    content="Ghanaian streetwear, African streetwear, limited drop clothing, African creative brand, Ghana fashion, 360SPRNG, BEYOND I collection, 360SPRNG, 360SPRNG clothing, 360SPRNG Ghana, 360SPRNG streetwear, Live Beyond Life, 360SPRNG fashion, 360SPRNG apparel, 360SPRNG official, 360SPRNG brand, 360SPRING, 360SPRING clothing, 360SPRING Ghana, 360SPRING streetwear, 360SPRING fashion, 360SPRING apparel, 360SPRING official, 360SPRING brand, Ghanaian streetwear brand, African streetwear brand, luxury streetwear Ghana, premium streetwear Africa, designer streetwear Ghana, creative fashion Ghana, Ghana streetwear, streetwear Ghana, Accra streetwear, Ghana fashion brand, African street fashion, African luxury streetwear, African designer clothing, African creative fashion, African youth fashion, modern African fashion, contemporary African streetwear, African fashion label, African fashion movement, African street culture, African urban fashion
+">
 
   <!-- Open Graph (for social sharing) -->
   <meta property="og:title" content="360SPRNG — Live Beyond Life">
@@ -615,6 +616,23 @@
       display: flex;
       justify-content: flex-end;
     }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.55;
+    }
+
+    .hero-img-ph {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(145deg, #0f0f0f 0%, #1a1a1a 100%);
+    }
   </style>
   <link rel="canonical" href="https://360sprng.com/">
 </head>
@@ -689,10 +707,10 @@
           <div class="drawer-link-name">the frat</div>
         </div><span class="drawer-link-arr"></span>
       </a>
-      <a href="about.html" class="drawer-link">
+      <a href="manifesto.html" class="drawer-link">
         <div class="drawer-link-meta">
           <div class="drawer-link-type">brand</div>
-          <div class="drawer-link-name">about</div>
+          <div class="drawer-link-name">manifesto</div>
         </div><span class="drawer-link-arr"></span>
       </a>
       <a href="newsletter.html" class="drawer-link">
@@ -713,13 +731,13 @@
     </div>
   </aside>
   <section id="hero">
-    <!-- Drop hero.mp4 into assets/video/ to activate -->
-    <!-- <video class="hero-video" autoplay muted loop playsinline src="./assets/video/hero.mp4"></video> -->
-    <div class="hero-video-ph" aria-hidden="true"><span><br></span></div>
+    <!--  -->
+    <div class="hero-img-ph" aria-hidden="true"></div>
+    <!-- HERO IMAGE: drop your image as assets/press/hero.jpg and uncomment: -->
+    <img class="hero-img" src="./assets/press/hero-bg.jpg" alt="360SPRNG">
     <div class="hero-overlay"></div>
-    <div class="hero-bg-num" aria-hidden="true"></div>
     <div class="hero-logo-wrap">
-      <img class="hero-logo" src="./assets/press/white_logo.png" alt="360SPRNG">
+      <img class="hero-logo" src="./assets/press/hero-bg.jpg" alt="360SPRNG">
     </div>
     <div class="hero-text">
       <h1>
@@ -728,7 +746,7 @@
         <div class="hero-line violet fade" style="transition-delay:.2s">life.</div>
       </h1>
       <div class="hero-foot fade" style="transition-delay:.4s">
-        <span class="hero-tagline">360SPRNG — Ghanaian streetwear — est. 2025</span>
+        <span class="hero-tagline">360SPRNG — Ghanaian streetwear — est. Ghana</span>
       </div>
     </div>
   </section>
@@ -749,6 +767,35 @@
       <span>beyond .i</span><span class="dot">✦</span>
     </div>
   </div>
+
+  <footer
+    style="border-top:1px solid rgba(242,237,228,0.07);padding:2.75rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:var(--gray);flex-wrap:wrap;gap:1.5rem;">
+    <div style="font-family:var(--anton);font-size:1.3rem;letter-spacing:0.12em;">360SPRNG</div>
+    <ul style="display:flex;gap:2rem;list-style:none;flex-wrap:wrap;justify-content:center;">
+      <li><a href="store.html"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;transition:opacity 0.2s;color:var(--bone);text-decoration:none;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">store</a></li>
+      <li><a href="lookbook.html"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;transition:opacity 0.2s;color:var(--bone);text-decoration:none;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">lookbook</a></li>
+      <li><a href="community.html"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;transition:opacity 0.2s;color:var(--bone);text-decoration:none;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">the frat</a></li>
+      <li><a href="newsletter.html"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;transition:opacity 0.2s;color:var(--bone);text-decoration:none;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">newsletter</a></li>
+      <li><a href="manifesto.html"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;color:var(--bone);text-decoration:none;font-weight:bold;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">manifesto</a></li>
+      <li><a href="terms.html"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;color:var(--bone);text-decoration:none;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">terms of use</a></li>
+      <li><a href="https://instagram.com/360SPRNG" target="_blank" rel="noopener"
+          style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5;transition:opacity 0.2s;color:var(--bone);text-decoration:none;"
+          onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">instagram</a></li>
+    </ul>
+    <span style="font-size:0.7rem;letter-spacing:0.1em;opacity:0.12;text-transform:uppercase;">© 2026 360SPRNG</span>
+  </footer>
 
   <script>
     function toggleMenu() {
