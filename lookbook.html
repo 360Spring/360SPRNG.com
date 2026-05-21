@@ -3,9 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>360SPRNG — Lookbook</title>
-  <meta name="description" content="BEYOND .I lookbook. Worn and seen.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>360SPRNG — Lookbook | Explorable Gallery</title>
+  <meta name="description" content="BEYOND .I lookbook. Worn and seen. Explore each frame — limited Anubis collection.">
   <meta name="description"
     content="BEYOND .I — the debut collection from 360SPRNG. Anubis-themed limited drop. Black and white colorways. No restock.">
   <meta name="keywords"
@@ -452,6 +452,7 @@
       position: relative;
       overflow: hidden;
       cursor: pointer;
+      transition: filter 0.2s;
     }
 
     .lb-cell::before {
@@ -499,6 +500,7 @@
       align-items: center;
       justify-content: center;
       transition: background 0.3s;
+      pointer-events: none;
     }
 
     .lb-cell:hover .lb-inner {
@@ -513,6 +515,7 @@
       object-fit: cover;
       filter: grayscale(15%);
       transition: filter 0.4s, transform 0.5s;
+      pointer-events: none;
     }
 
     .lb-cell:hover img {
@@ -538,6 +541,187 @@
       .lb-cell:nth-child(n) {
         grid-column: span 12;
       }
+    }
+
+    /* ========== EXPLORABLE MODAL GALLERY ========== */
+    .modal-gallery {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.94);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: visibility 0.2s, opacity 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      font-family: var(--next-up);
+      cursor: default;
+    }
+
+    .modal-gallery.active {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .modal-container {
+      position: relative;
+      width: 90vw;
+      max-width: 1300px;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-main {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-img {
+      max-width: 90%;
+      max-height: 85vh;
+      object-fit: contain;
+      box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
+      transition: transform 0.25s ease-out;
+      border-radius: 2px;
+      user-select: none;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10010;
+    }
+
+    .modal-close svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--bone);
+      stroke-width: 1.2;
+      transition: stroke 0.2s, transform 0.2s;
+    }
+
+    .modal-close:hover svg {
+      stroke: var(--indigo);
+      transform: scale(1.05);
+    }
+
+    .nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10, 10, 10, 0.6);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(242, 237, 228, 0.15);
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10010;
+    }
+
+    .nav-btn:hover {
+      background: var(--indigo);
+      border-color: var(--indigo);
+    }
+
+    .nav-btn svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--bone);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .nav-prev {
+      left: 20px;
+    }
+
+    .nav-next {
+      right: 20px;
+    }
+
+    .modal-meta {
+      position: absolute;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      width: fit-content;
+      margin: 0 auto;
+      padding: 0.6rem 1.4rem;
+      border-radius: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+      font-family: var(--anton);
+    }
+
+    .modal-counter {
+      color: var(--indigo);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+    }
+
+    .modal-caption {
+      opacity: 0.65;
+    }
+
+    @media (max-width: 720px) {
+      .nav-btn {
+        width: 42px;
+        height: 42px;
+      }
+
+      .nav-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .modal-meta {
+        bottom: 16px;
+        font-size: 0.55rem;
+        padding: 0.4rem 1rem;
+        gap: 1rem;
+      }
+
+      .modal-close {
+        top: 16px;
+        right: 18px;
+      }
+    }
+
+    body.modal-open {
+      overflow: hidden;
+      padding-right: 0;
     }
   </style>
 </head>
@@ -631,49 +815,35 @@
     <div class="s-label fade">lookbook</div>
     <h1 class="s-title fade">worn &<br>seen</h1>
     <div class="lb-grid fade" style="margin-top:4rem">
-
-      <!-- shot 01 — tall left anchor -->
+      <!-- shot 01 -->
       <div class="lb-cell">
-        <img src="./assets/lookbook/shot-01.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 01">
+        <img src="./assets/lookbook/shot-01.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
-      <!-- shot 02 — narrow mid -->
       <div class="lb-cell">
-        <img src="./assets/lookbook/shot-02.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 02">
+        <img src="./assets/lookbook/shot-02.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
-      <!-- shot 03 — tall right -->
       <div class="lb-cell">
-        <img src="./assets/lookbook/shot-03.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 03">
+        <img src="./assets/lookbook/shot-03.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
-      <!-- shot 04 — left panel -->
       <div class="lb-cell">
-        <img src="./assets/lookbook/shot-04.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 04">
+        <img src="./assets/lookbook/shot-04.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
-      <!-- shot 05 — wide landscape -->
       <div class="lb-cell wide">
-        <img src="./assets/lookbook/shot-05.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 05">
+        <img src="./assets/lookbook/shot-05.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
-      <!-- shot 06 — bottom left -->
       <div class="lb-cell">
-        <img src="./assets/lookbook/shot-06.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 06">
+        <img src="./assets/lookbook/shot-06.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
-      <!-- shot 07 — bottom right -->
       <div class="lb-cell">
-        <img src="./assets/lookbook/shot-07.jpg" alt="BEYOND .I — 360SPRNG lookbook shot 07">
+        <img src="./assets/lookbook/shot-07.jpg" alt="">
         <div class="lb-inner"></div>
       </div>
-
     </div>
     <div class="lb-tag fade">tag us when you wear it @360SPRNG</div>
   </div>
@@ -689,7 +859,34 @@
     </ul>
     <span class="footer-copy">© 2026 360SPRNG</span>
   </footer>
+
+  <!-- EXPLORABLE MODAL LIGHTBOX -->
+  <div id="galleryModal" class="modal-gallery" role="dialog" aria-modal="true"
+    aria-label="Fullscreen lookbook explorer">
+    <div class="modal-container">
+      <button class="modal-close" id="closeModalBtn" aria-label="Close gallery"><svg viewBox="0 0 24 24"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6L6 18M6 6l12 12" />
+        </svg></button>
+      <button class="nav-btn nav-prev" id="prevImageBtn" aria-label="Previous image"><svg viewBox="0 0 24 24"
+          fill="none">
+          <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.5" />
+        </svg></button>
+      <div class="modal-main">
+        <img id="modalImage" class="modal-img" alt="Fullsize lookbook" src="">
+      </div>
+      <button class="nav-btn nav-next" id="nextImageBtn" aria-label="Next image"><svg viewBox="0 0 24 24" fill="none">
+          <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.5" />
+        </svg></button>
+      <div class="modal-meta">
+        <span class="modal-counter" id="imageCounter">0 / 0</span>
+        <span class="modal-caption" id="imageCaption">BEYOND .I</span>
+      </div>
+    </div>
+  </div>
+
   <script>
+    // --- menu logic ---
     function toggleMenu() {
       const btn = document.getElementById('menuBtn'), drawer = document.getElementById('menuDrawer'), scrim = document.getElementById('menuScrim');
       const opening = !drawer.classList.contains('open');
@@ -705,12 +902,159 @@
       document.getElementById('menuBtn').setAttribute('aria-expanded', 'false');
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-  </script>
-  <script>
+
+    // intersection fade
     const obs = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }); }, { threshold: 0.08 });
     document.querySelectorAll('.fade').forEach(el => obs.observe(el));
-  </script>
 
+    // --- EXPLORABLE GALLERY (LIGHTBOX) ---
+    (function () {
+      // collect all images from .lb-cell (ensures all 7 items)
+      const lookbookCells = Array.from(document.querySelectorAll('.lb-cell'));
+      const imagesArray = lookbookCells.map(cell => {
+        const imgEl = cell.querySelector('img');
+        return {
+          src: imgEl ? imgEl.src : '',
+          alt: imgEl ? imgEl.alt : '360SPRNG lookbook image'
+        };
+      }).filter(img => img.src); // only valid images
+
+      // DOM elements
+      const modalEl = document.getElementById('galleryModal');
+      const modalImg = document.getElementById('modalImage');
+      const counterSpan = document.getElementById('imageCounter');
+      const captionSpan = document.getElementById('imageCaption');
+      const closeBtn = document.getElementById('closeModalBtn');
+      const prevBtn = document.getElementById('prevImageBtn');
+      const nextBtn = document.getElementById('nextImageBtn');
+
+      let currentIndex = 0;
+      let isModalOpen = false;
+
+      // preload helper (optional but good)
+      function preloadAdjacent(index) {
+        const next = imagesArray[index + 1];
+        const prev = imagesArray[index - 1];
+        if (next) { const imgPre = new Image(); imgPre.src = next.src; }
+        if (prev) { const imgPre = new Image(); imgPre.src = prev.src; }
+      }
+
+      function updateModalContent() {
+        if (!imagesArray.length) return;
+        const item = imagesArray[currentIndex];
+        if (item && item.src) {
+          modalImg.src = item.src;
+          modalImg.alt = item.alt || 'BEYOND .I lookbook frame';
+          captionSpan.textContent = item.alt && item.alt.length > 35 ? item.alt.substring(0, 35) + '…' : (item.alt || 'BEYOND .I');
+          counterSpan.textContent = `${currentIndex + 1} / ${imagesArray.length}`;
+          preloadAdjacent(currentIndex);
+        }
+      }
+
+      function openModal(index) {
+        if (!imagesArray.length) return;
+        currentIndex = Math.min(Math.max(0, index), imagesArray.length - 1);
+        updateModalContent();
+        modalEl.classList.add('active');
+        document.body.classList.add('modal-open');
+        isModalOpen = true;
+        // ensure any open menu closes for better UX
+        if (document.getElementById('menuDrawer').classList.contains('open')) closeMenu();
+      }
+
+      function closeModal() {
+        modalEl.classList.remove('active');
+        document.body.classList.remove('modal-open');
+        isModalOpen = false;
+        // optional: clear src for smoother transition
+        // but we keep to avoid flicker on reopen
+      }
+
+      function nextImage(e) {
+        if (!imagesArray.length) return;
+        if (e) e.stopPropagation();
+        currentIndex = (currentIndex + 1) % imagesArray.length;
+        updateModalContent();
+      }
+
+      function prevImage(e) {
+        if (!imagesArray.length) return;
+        if (e) e.stopPropagation();
+        currentIndex = (currentIndex - 1 + imagesArray.length) % imagesArray.length;
+        updateModalContent();
+      }
+
+      // Attach click listeners to each .lb-cell -> explorable
+      lookbookCells.forEach((cell, idx) => {
+        cell.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openModal(idx);
+        });
+        // touch-friendly
+        cell.style.cursor = 'pointer';
+      });
+
+      // modal controls
+      closeBtn.addEventListener('click', closeModal);
+      prevBtn.addEventListener('click', prevImage);
+      nextBtn.addEventListener('click', nextImage);
+
+      // close when clicking on modal background (but not on image/buttons)
+      modalEl.addEventListener('click', (e) => {
+        if (e.target === modalEl || e.target === document.querySelector('.modal-container') && !e.target.closest('.nav-btn')) {
+          closeModal();
+        }
+      });
+
+      // keyboard navigation
+      window.addEventListener('keydown', (e) => {
+        if (!isModalOpen) return;
+        if (e.key === 'Escape') {
+          closeModal();
+          e.preventDefault();
+        } else if (e.key === 'ArrowLeft') {
+          prevImage();
+          e.preventDefault();
+        } else if (e.key === 'ArrowRight') {
+          nextImage();
+          e.preventDefault();
+        }
+      });
+
+      // SWIPE support for touch devices
+      let touchStartX = 0;
+      let touchEndX = 0;
+      modalEl.addEventListener('touchstart', (e) => {
+        if (!isModalOpen) return;
+        touchStartX = e.changedTouches[0].screenX;
+      });
+      modalEl.addEventListener('touchend', (e) => {
+        if (!isModalOpen) return;
+        touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) prevImage();
+          else nextImage();
+          e.preventDefault();
+        }
+      });
+
+      // fallback if there are no images — hide arrows gracefully
+      if (imagesArray.length <= 1) {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+      } else {
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+      }
+
+      // preload first image for instant open
+      if (imagesArray[0]) {
+        const preloadFirst = new Image();
+        preloadFirst.src = imagesArray[0].src;
+      }
+    })();
+  </script>
   <script type="text/javascript">
     window.omnisend = window.omnisend || [];
     omnisend.push(["brandID", "6a0a57539c08a1ea4981408a"]);
@@ -723,7 +1067,6 @@
       t.parentNode.insertBefore(e, t)
     }();
   </script>
-
 </body>
 
 </html>
