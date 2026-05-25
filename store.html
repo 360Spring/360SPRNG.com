@@ -1028,7 +1028,8 @@
       position: fixed;
       inset: 0;
       background: rgba(10, 10, 10, 0.96);
-      z-index: 650;
+      z-index: 290;
+      top: 106px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.32s ease;
@@ -1060,18 +1061,7 @@
     }
 
     .pdp-close {
-      position: absolute;
-      top: 1.25rem;
-      right: 1.5rem;
-      background: none;
-      border: none;
-      color: var(--bone);
-      font-size: 1.5rem;
-      opacity: 0.35;
-      cursor: pointer;
-      z-index: 10;
-      transition: opacity 0.2s;
-      line-height: 1;
+      display: cloded;
     }
 
     .pdp-close:hover {
@@ -1388,7 +1378,7 @@
     }
 
     /* Mobile: stack gallery + info */
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
       .pdp-panel {
         width: 100%;
       }
@@ -2550,9 +2540,14 @@
     }
 
     function closePdp() {
-      document.getElementById('pdpOverlay').classList.remove('open');
+      
+      document.getEledocument.querySelector('.nav-logo').addEventListener('click', e => {
+  if (document.getElementById('pdpOverlay').classList.contains('open')) {
+    e.preventDefault(); closePdp();
+  }
+mentById('pdpOverlay').classList.remove('open');
       document.body.style.overflow = '';
-      pdpSelectedSize = null;
+      pdpSelectedSize = null});;
     }
 
     function closePdpOnOverlay(e) {
