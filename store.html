@@ -1022,7 +1022,7 @@
     }
 
     /* ══════════════════════════════════════════════════════
-       PRODUCT DETAIL PANEL (new full-screen tap view)
+       PRODUCT DETAIL PANEL
     ══════════════════════════════════════════════════════ */
     .pdp-overlay {
       position: fixed;
@@ -1045,7 +1045,7 @@
     }
 
     .pdp-panel {
-     position: relative;
+      position: relative;
       width: 100%;
       min-height: 100%;
       background: var(--gray);
@@ -1056,12 +1056,28 @@
       transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.38s ease;
     }
 
+    /* FIX #2: panel now becomes visible when overlay opens */
     .pdp-overlay.open .pdp-panel {
-      transform: translateX(0);
+      transform: translateY(0);
+      opacity: 1;
     }
 
+    /* FIX #3: close button properly positioned and styled */
     .pdp-close {
-      display: close;
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      z-index: 10;
+      display: block;
+      background: none;
+      border: none;
+      color: var(--bone);
+      font-size: 1.3rem;
+      opacity: 0.4;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      padding: 0;
+      line-height: 1;
     }
 
     .pdp-close:hover {
@@ -1293,13 +1309,6 @@
       border-color: var(--indigo);
     }
 
-    /*
-    ══════════════════════════════════════════════════════════
-    SIZE SOLD OUT — to mark a size sold out inside .pdp-sizes:
-    Replace:  <button class="pdp-size-btn" data-size="XS">XS</button>
-    With:     <button class="pdp-size-btn pdp-size-sold" disabled data-size="XS">XS</button>
-    ══════════════════════════════════════════════════════════
-    */
     .pdp-size-btn.pdp-size-sold {
       opacity: 0.22;
       cursor: not-allowed;
@@ -1378,7 +1387,7 @@
     }
 
     /* Mobile: stack gallery + info */
-  @media (max-width: 640px) {
+    @media (max-width: 640px) {
       .pdp-overlay {
         top: 95px;
       }
@@ -1409,15 +1418,12 @@
     }
 
     /* ══════════════════════════════════════════════════════
-       OLD LIGHTBOX (kept for compatibility, hidden by default)
+       OLD LIGHTBOX & SIZE MODAL (hidden, kept for safety)
     ══════════════════════════════════════════════════════ */
     .lightbox {
       display: none !important;
     }
 
-    /* ══════════════════════════════════════════════════════
-       SIZE MODAL (legacy — now replaced by PDP panel)
-    ══════════════════════════════════════════════════════ */
     .modal-overlay {
       display: none !important;
     }
@@ -1836,13 +1842,6 @@
           <div class="drawer-link-name">lookbook</div>
         </div>
       </a>
-
-      <a href="archive.html" class="drawer-link">
-        <div class="drawer-link-meta">
-          <div class="drawer-link-type">past drops</div>
-          <div class="drawer-link-name">archive</div>
-        </div>
-      </a>
       <a href="community.html" class="drawer-link">
         <div class="drawer-link-meta">
           <div class="drawer-link-type">join</div>
@@ -1852,7 +1851,7 @@
       <a href="about.html" class="drawer-link">
         <div class="drawer-link-meta">
           <div class="drawer-link-type">brand</div>
-          <div class="drawer-link-name">about</div>
+          <div class="drawer-link-name">manifesto</div>
         </div>
       </a>
       <a href="newsletter.html" class="drawer-link">
@@ -1964,7 +1963,7 @@
         </div>
       </div>
 
-      <!-- PRODUCT: Anubis Tee — White 
+      <!-- PRODUCT: Anubis Tee — White
       <div class="product-card" data-category="tees" data-product-id="anubis-white">
         <div class="product-img">
           <img class="img-slide" src="./assets/products/anubis-white-front.jpg" onerror="this.style.display='none'"
@@ -1977,8 +1976,8 @@
             alt="Anubis Tee White on body back">
           <div class="img-ph">ANUBIS</div>
           <div class="img-dots"><span class="img-dot active"></span><span class="img-dot"></span><span
-              class="img-dot"></span><span class="img-dot"></span></div> -->
-          <!-- <div class="sold-out-badge">sold out</div>
+              class="img-dot"></span><span class="img-dot"></span></div>
+          <div class="sold-out-badge">sold out</div>
         </div>
         <div class="product-info">
           <div>
@@ -1992,7 +1991,7 @@
         </div>
       </div> -->
 
-      <!-- PRODUCT: Space Tee — SOLD OUT example -->
+      <!-- PRODUCT: Space Tee — SOLD OUT -->
       <div class="product-card sold-out" data-category="tees" data-product-id="space">
         <div class="product-img">
           <img class="img-slide" src="./assets/products/space-front.jpg" onerror="this.style.display='none'"
@@ -2021,38 +2020,22 @@
       </div>
 
       <!-- COMING SOON placeholders -->
-      <div class="product-card coming-soon-card" data-category="hoodies"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">hoodies</span></div>
-      <div class="product-card coming-soon-card" data-category="shorts"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">shorts</span></div>
-      <div class="product-card coming-soon-card" data-category="joggers"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">joggers</span></div>
-      <div class="product-card coming-soon-card" data-category="jackets"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">jackets</span></div>
-      <div class="product-card coming-soon-card" data-category="bombers"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">bombers</span></div>
-      <div class="product-card coming-soon-card" data-category="woven"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">woven pieces</span></div>
-      <div class="product-card coming-soon-card" data-category="buttoned"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">buttoned pieces</span></div>
-      <div class="product-card coming-soon-card" data-category="headwear"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">caps & hats</span></div>
-      <div class="product-card coming-soon-card" data-category="beanies"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">beanies</span></div>
-      <div class="product-card coming-soon-card" data-category="socks"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">socks</span></div>
-      <div class="product-card coming-soon-card" data-category="totes"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">tote bags</span></div>
-      <div class="product-card coming-soon-card" data-category="bags"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">shoulder bags</span></div>
-      <div class="product-card coming-soon-card" data-category="decks"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">skate decks</span></div>
-      <div class="product-card coming-soon-card" data-category="prints"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">posters & prints</span></div>
-      <div class="product-card coming-soon-card" data-category="stickers"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">stickers</span></div>
-      <div class="product-card coming-soon-card" data-category="accessories"><span class="coming-soon-label">coming
-          soon</span><span class="coming-soon-name">accessories</span></div>
+      <div class="product-card coming-soon-card" data-category="hoodies"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">hoodies</span></div>
+      <div class="product-card coming-soon-card" data-category="shorts"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">shorts</span></div>
+      <div class="product-card coming-soon-card" data-category="joggers"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">joggers</span></div>
+      <div class="product-card coming-soon-card" data-category="jackets"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">jackets</span></div>
+      <div class="product-card coming-soon-card" data-category="bombers"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">bombers</span></div>
+      <div class="product-card coming-soon-card" data-category="woven"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">woven pieces</span></div>
+      <div class="product-card coming-soon-card" data-category="buttoned"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">buttoned pieces</span></div>
+      <div class="product-card coming-soon-card" data-category="headwear"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">caps & hats</span></div>
+      <div class="product-card coming-soon-card" data-category="beanies"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">beanies</span></div>
+      <div class="product-card coming-soon-card" data-category="socks"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">socks</span></div>
+      <div class="product-card coming-soon-card" data-category="totes"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">tote bags</span></div>
+      <div class="product-card coming-soon-card" data-category="bags"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">shoulder bags</span></div>
+      <div class="product-card coming-soon-card" data-category="decks"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">skate decks</span></div>
+      <div class="product-card coming-soon-card" data-category="prints"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">posters & prints</span></div>
+      <div class="product-card coming-soon-card" data-category="stickers"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">stickers</span></div>
+      <div class="product-card coming-soon-card" data-category="accessories"><span class="coming-soon-label">coming soon</span><span class="coming-soon-name">accessories</span></div>
     </div>
   </div>
 
@@ -2092,8 +2075,7 @@
           <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
 
           <button class="pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">add to cart</button>
-          <div class="pdp-sold-note" id="pdpSoldNote" style="display:none">this piece is sold out — no restock
-          </div>
+          <div class="pdp-sold-note" id="pdpSoldNote" style="display:none">this piece is sold out — no restock</div>
 
           <div class="pdp-details" id="pdpDetails"></div>
         </div>
@@ -2231,8 +2213,7 @@
           <label for="saveProfile">save details for future orders (optional)</label>
         </div>
         <div id="checkoutSummary" class="checkout-order-summary"></div>
-        <div class="checkout-error" id="checkout-error">please fill in your name, email, and shipping address.
-        </div>
+        <div class="checkout-error" id="checkout-error">please fill in your name, email, and shipping address.</div>
         <button class="pay-btn" onclick="initiateCheckout()">pay securely via paystack</button>
       </div>
     </div>
@@ -2295,7 +2276,6 @@
         ls.classList.add('unlocked');
         setTimeout(() => { ls.style.display = 'none'; }, 520);
       } else {
-        // Shake dots red
         document.querySelectorAll('.lock-dot').forEach(d => {
           d.classList.remove('filled');
           d.classList.add('error');
@@ -2352,11 +2332,10 @@
           sizes: [
             { size: 'XS', soldOut: true },
             { size: 'S', soldOut: true },
-            { size: 'M', },
+            { size: 'M' },
             { size: 'L', soldOut: true },
             { size: 'XL', soldOut: true }
           ],
-          /* Colour variants — link to other product IDs */
           colorVariants: [
             { label: 'black', productId: 'anubis-black', active: true },
             { label: 'white', productId: 'anubis-white' }
@@ -2385,7 +2364,7 @@
           sizes: [
             { size: 'XS', soldOut: true },
             { size: 'S', soldOut: true },
-            { size: 'M', },
+            { size: 'M' },
             { size: 'L', soldOut: true },
             { size: 'XL', soldOut: true }
           ],
@@ -2417,7 +2396,7 @@
           sizes: [
             { size: 'XS', soldOut: true },
             { size: 'S', soldOut: true },
-            { size: 'M', },
+            { size: 'M' },
             { size: 'L', soldOut: true },
             { size: 'XL', soldOut: true }
           ],
@@ -2443,17 +2422,14 @@
       pdpSelectedSize = null;
       pdpIsSoldOut = false;
 
-      // Check if card is marked sold-out
       const card = document.querySelector(`[data-product-id="${productId}"]`);
       if (card && card.classList.contains('sold-out')) pdpIsSoldOut = true;
 
-      // Populate header info
       document.getElementById('pdpName').textContent = p.name;
       document.getElementById('pdpVar').textContent = p.variant;
       document.getElementById('pdpPrice').textContent = 'GH₵ ' + p.price;
       document.getElementById('pdpDesc').textContent = p.description || '';
 
-      // Main image
       const mainImg = document.getElementById('pdpMainImg');
       const mainPh = document.getElementById('pdpMainPh');
       mainImg.src = p.images[0] || '';
@@ -2462,7 +2438,6 @@
       mainPh.style.display = 'none';
       mainImg.onerror = () => { mainImg.style.display = 'none'; mainPh.textContent = p.name; mainPh.style.display = 'flex'; };
 
-      // Thumbnails
       const thumbsWrap = document.getElementById('pdpThumbs');
       thumbsWrap.innerHTML = '';
       p.images.forEach((src, i) => {
@@ -2477,7 +2452,6 @@
         thumbsWrap.appendChild(thumb);
       });
 
-      // Colour variant chips
       const varWrap = document.getElementById('pdpVariantWrap');
       const varChips = document.getElementById('pdpVariants');
       varChips.innerHTML = '';
@@ -2494,7 +2468,6 @@
         varWrap.style.display = 'none';
       }
 
-      // Sizes
       const sizesWrap = document.getElementById('pdpSizes');
       sizesWrap.innerHTML = '';
       (p.sizes || []).forEach(s => {
@@ -2512,7 +2485,6 @@
       });
       document.getElementById('pdpSizeError').classList.remove('show');
 
-      // Add to cart button state
       const addBtn = document.getElementById('pdpAddBtn');
       const soldNote = document.getElementById('pdpSoldNote');
       if (pdpIsSoldOut) {
@@ -2525,7 +2497,6 @@
         soldNote.style.display = 'none';
       }
 
-      // Details rows
       const detailsWrap = document.getElementById('pdpDetails');
       detailsWrap.innerHTML = '';
       (p.details || []).forEach(d => {
@@ -2538,16 +2509,18 @@
       document.getElementById('pdpOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-    document.querySelector('.nav-logo').addEventListener('click', e => {
-  if (document.getElementById('pdpOverlay').classList.contains('open')) {
-    e.preventDefault(); closePdp();
-  }
-});
 
+    document.querySelector('.nav-logo').addEventListener('click', e => {
+      if (document.getElementById('pdpOverlay').classList.contains('open')) {
+        e.preventDefault(); closePdp();
+      }
+    });
+
+    /* FIX #1: closePdp was corrupted — restored correctly */
     function closePdp() {
-mentById('pdpOverlay').classList.remove('open');
+      document.getElementById('pdpOverlay').classList.remove('open');
       document.body.style.overflow = '';
-      pdpSelectedSize = null});;
+      pdpSelectedSize = null;
     }
 
     function closePdpOnOverlay(e) {
