@@ -1026,13 +1026,17 @@
     ══════════════════════════════════════════════════════ */
     .pdp-overlay {
       position: fixed;
-      inset: 0;
-      background: rgba(10, 10, 10, 0.96);
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--black);
       z-index: 290;
-      top: 106px;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.32s ease;
+      transition: opacity 0.3s ease;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .pdp-overlay.open {
@@ -1041,19 +1045,15 @@
     }
 
     .pdp-panel {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: min(780px, 100vw);
+     position: relative;
+      width: 100%;
+      min-height: 100%;
       background: var(--gray);
-      border-left: 1px solid rgba(242, 237, 228, 0.07);
-      z-index: 660;
-      transform: translateX(100%);
-      transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      transform: translateY(16px);
+      opacity: 0;
+      transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.38s ease;
     }
 
     .pdp-overlay.open .pdp-panel {
@@ -1061,7 +1061,7 @@
     }
 
     .pdp-close {
-      display: cloded;
+      display: close;
     }
 
     .pdp-close:hover {
@@ -1379,10 +1379,8 @@
 
     /* Mobile: stack gallery + info */
   @media (max-width: 640px) {
-  .pdp-overlay { top: 95px; }
-}
-
-      
+      .pdp-overlay {
+        top: 95px;
       }
 
       .pdp-inner {
@@ -1390,8 +1388,8 @@
       }
 
       .pdp-gallery {
-        height: 55vw;
-        min-height: 260px;
+        height: 60vw;
+        min-height: 240px;
         flex: none;
       }
 
