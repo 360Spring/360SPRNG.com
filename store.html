@@ -2538,13 +2538,13 @@
       document.getElementById('pdpOverlay').classList.add('open');
       document.body.style.overflow = 'hidden';
     }
-
-    function closePdp() {
-      
-      document.getEledocument.querySelector('.nav-logo').addEventListener('click', e => {
+    document.querySelector('.nav-logo').addEventListener('click', e => {
   if (document.getElementById('pdpOverlay').classList.contains('open')) {
     e.preventDefault(); closePdp();
   }
+});
+
+    function closePdp() {
 mentById('pdpOverlay').classList.remove('open');
       document.body.style.overflow = '';
       pdpSelectedSize = null});;
