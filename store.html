@@ -1067,7 +1067,7 @@
         digital = (document.getElementById('co-digital') || {}).value || '',
         notes = document.getElementById('co-notes').value.trim(),
         err = document.getElementById('checkout-error');
-      if (!name || !email || !addr1 || !city) { err.classList.add('show'); return; }
+      if (!name || !email || !addr1 || !city || !region) { err.classList.add('show'); return; }
       err.classList.remove('show');
       if (document.getElementById('saveProfile').checked) {
         localStorage.setItem('360_profile', JSON.stringify({ name, email, phone, country, addr1, addr2, city, region, postal, digital, notes }));
