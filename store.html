@@ -104,7 +104,7 @@
     .lock-hint { font-size: clamp(0.55rem, 1.8vw, 0.68rem); letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.15; text-align: center; }
 
     /* ══════════════════════════════════════════════════════
-       NAV — solid background, no marquee, starts at top: 0
+       NAV
     ══════════════════════════════════════════════════════ */
     nav {
       position: fixed;
@@ -127,7 +127,6 @@
       color: var(--bone);
     }
 
-    /* Desktop inline nav links */
     .nav-links {
       display: flex;
       align-items: center;
@@ -319,7 +318,6 @@
     }
     .pdp-close:hover { opacity: 1; }
 
-    /* Desktop: side-by-side gallery + info */
     .pdp-inner { display: flex; flex: 1; min-height: 0; }
 
     .pdp-gallery {
@@ -372,30 +370,18 @@
     .pdp-detail-row { display: flex; justify-content: space-between; font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.45; }
     .pdp-detail-row span:last-child { opacity: 0.8; color: var(--bone); }
 
-    /* ══════════════════════════════════════════════════════
-       MOBILE PDP — full portrait image, scrollable info below
-       Key fix: use aspect-ratio 3/4 so the full product
-       image renders without being clipped
-    ══════════════════════════════════════════════════════ */
     @media (max-width: 640px) {
       .pdp-overlay { overflow-y: auto; }
-
-      /* Panel stacks vertically and scrolls as one */
       .pdp-panel { min-height: 100dvh; overflow: visible; }
       .pdp-inner { flex-direction: column; overflow: visible; min-height: 0; }
-
-      /* Gallery: full width, true 3:4 portrait — whole image always visible */
       .pdp-gallery {
         width: 100%;
         flex: none;
         height: auto;
-        /* aspect-ratio drives the height from the width — no clipping */
         aspect-ratio: 3 / 4;
         position: relative;
         overflow: hidden;
       }
-
-      /* Image sits inside the ratio box */
       .pdp-main-img {
         position: absolute;
         inset: 0;
@@ -403,18 +389,13 @@
         height: 100%;
         object-fit: cover;
       }
-
-      /* Info scrolls naturally below the image */
       .pdp-info {
         width: 100%;
         border-left: none;
         padding: 1.5rem 1.25rem 3rem;
         overflow: visible;
       }
-
-      /* Details don't need auto margin push on mobile */
       .pdp-details { margin-top: 1.5rem; }
-
       .pdp-thumb { width: 36px; height: 46px; }
       .pdp-close { top: 0.75rem; right: 1rem; }
     }
@@ -463,7 +444,6 @@
 
     @media(max-width:768px) {
       nav { padding: 1.1rem 1.5rem; }
-      /* Hide inline nav links on mobile — hamburger handles it */
       .nav-links { display: none; }
       .page-wrap { padding: 6rem 1.25rem 5rem; }
       .store-head { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
@@ -507,7 +487,6 @@
 
   <script src="./kill-switch.js" onerror="void 0"></script>
 
-  <!-- NAV — solid background, no marquee -->
   <nav>
     <a href="index.html" class="nav-logo">360SPRNG</a>
     <div class="nav-links">
@@ -1054,48 +1033,83 @@
     }
     function closeCheckout() { document.getElementById('checkoutOverlay').classList.remove('open'); document.body.style.overflow = ''; }
     function closeCheckoutOnOverlay(e) { if (e.target === document.getElementById('checkoutOverlay')) closeCheckout(); }
+
     function initiateCheckout() {
-      const name = document.getElementById('co-name').value.trim(),
-        email = document.getElementById('co-email').value.trim(),
-        phone = document.getElementById('co-phone').value.trim(),
-        country = document.getElementById('co-country').value,
-        addr1 = document.getElementById('co-addr1').value.trim(),
-        addr2 = document.getElementById('co-addr2').value.trim(),
-        city = document.getElementById('co-city').value.trim(),
-        region = getRegion(),
-        postal = document.getElementById('co-postal').value.trim(),
-        digital = (document.getElementById('co-digital') || {}).value || '',
-        notes = document.getElementById('co-notes').value.trim(),
-        err = document.getElementById('checkout-error');
+      const name    = document.getElementById('co-name').value.trim(),
+            email   = document.getElementById('co-email').value.trim(),
+            phone   = document.getElementById('co-phone').value.trim(),
+            country = document.getElementById('co-country').value,
+            addr1   = document.getElementById('co-addr1').value.trim(),
+            addr2   = document.getElementById('co-addr2').value.trim(),
+            city    = document.getElementById('co-city').value.trim(),
+            region  = getRegion(),
+            postal  = document.getElementById('co-postal').value.trim(),
+            digital = (document.getElementById('co-digital') || {}).value || '',
+            notes   = document.getElementById('co-notes').value.trim(),
+            err     = document.getElementById('checkout-error');
+
       if (!name || !email || !addr1 || !city || !region) { err.classList.add('show'); return; }
       err.classList.remove('show');
+
       if (document.getElementById('saveProfile').checked) {
         localStorage.setItem('360_profile', JSON.stringify({ name, email, phone, country, addr1, addr2, city, region, postal, digital, notes }));
       }
-      const amount = cartTotal() * 100,
-        orderDetails = cart.map(i => `${i.name}(${i.size})x${i.qty}`).join(','),
-        shippingAddr = [addr1, addr2, city, region, postal, country].filter(Boolean).join(', ');
+
+      const amount       = cartTotal() * 100,
+            orderDetails = cart.map(i => `${i.name}(${i.size})x${i.qty}`).join(','),
+            shippingAddr = [addr1, addr2, city, region, postal, country].filter(Boolean).join(', ');
+
       PaystackPop.setup({
         key: CONFIG.paystackPublicKey, email, amount, currency: CONFIG.currency,
         channels: ['mobile_money', 'card'],
         metadata: { custom_fields: [
-          { display_name: 'Name', variable_name: 'name', value: name },
-          { display_name: 'Phone', variable_name: 'phone', value: phone },
-          { display_name: 'Order', variable_name: 'order', value: orderDetails },
-          { display_name: 'Ship To', variable_name: 'ship_to', value: shippingAddr },
-          { display_name: 'Digital Addr', variable_name: 'digital', value: digital || '—' },
-          { display_name: 'Notes', variable_name: 'notes', value: notes || '—' }
+          { display_name: 'Name',         variable_name: 'name',     value: name },
+          { display_name: 'Phone',        variable_name: 'phone',    value: phone },
+          { display_name: 'Order',        variable_name: 'order',    value: orderDetails },
+          { display_name: 'Ship To',      variable_name: 'ship_to',  value: shippingAddr },
+          { display_name: 'Digital Addr', variable_name: 'digital',  value: digital || '—' },
+          { display_name: 'Notes',        variable_name: 'notes',    value: notes || '—' }
         ]},
-        label: '360SPRNG', onClose: function () {},
+        label: '360SPRNG',
+        onClose: function () {},
         callback: function (response) {
-          const order = { ref: response.reference, date: new Date().toISOString(), items: JSON.parse(JSON.stringify(cart)), total: cartTotal(), name, email, phone, shipping: { country, addr1, addr2, city, region, postal, digital, notes } };
+
+          /* 1 — write to D1 (silent fail — Paystack is source of truth) */
+          fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ref:             response.reference,
+              name,  email,  phone,  country,
+              address:         [addr1, addr2].filter(Boolean).join(', '),
+              city,  region,  postal,
+              digital_address: digital,
+              notes,
+              items:           JSON.stringify(cart),
+              total:           cartTotal()
+            })
+          }).catch(() => {});
+
+          /* 2 — save to localStorage */
+          const order = {
+            ref: response.reference,
+            date: new Date().toISOString(),
+            items: JSON.parse(JSON.stringify(cart)),
+            total: cartTotal(),
+            name, email, phone,
+            shipping: { country, addr1, addr2, city, region, postal, digital, notes }
+          };
           const orders = JSON.parse(localStorage.getItem('360_orders') || '[]');
-          orders.unshift(order); localStorage.setItem('360_orders', JSON.stringify(orders));
+          orders.unshift(order);
+          localStorage.setItem('360_orders', JSON.stringify(orders));
+
+          /* 3 — clear and confirm */
           cart = []; saveCart(); renderCart(); closeCheckout(); closeCart();
           showSuccess(name, response.reference, order.total);
         }
       }).openIframe();
     }
+
     function showSuccess(name, ref, total) {
       const m = document.createElement('div');
       m.style.cssText = 'position:fixed;inset:0;background:rgba(10,10,10,0.97);z-index:900;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;padding:2rem;text-align:center;';
