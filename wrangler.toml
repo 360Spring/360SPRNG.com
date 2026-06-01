@@ -1,0 +1,19 @@
+name = "360sprng-website"
+compatibility_date = "2026-04-26"
+main = "./_worker.js"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "."
+
+[observability]
+enabled = true
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "360sprng-orders"
+database_id = "c19c59c6-be78-4146-998e-904bda9cf05b"
