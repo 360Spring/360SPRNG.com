@@ -17,6 +17,17 @@
       "binding": "DB",
       "database_name": "360sprng-orders",
       "database_id": "c19c59c6-be78-4146-998e-904bda9cf05b"
-    }
+    },
+    {
+      "observability"
+       "logs":{
+       "enabled":true,
+       "innovation_logs": true
+      }
+       "traces": {
+        "enabled": false
+      }
+     }
+   }
   ]
 }
