@@ -1,0 +1,1 @@
+drop NextUpBlack.woff2 and NextUpBlack.woff here

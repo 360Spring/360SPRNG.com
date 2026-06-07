@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>360SPRNG — My Profile</title>
+<meta name="description" content="Your saved details and order history.">
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+:root{--black:#0A0A0A;--bone:#F2EDE4;--indigo:#5C00FF;--gold:#C9922A;--gray:#141414;--gray-mid:#1E1E1E;--anton:'Anton',sans-serif;--next-up:'Next Up Black','Anton',sans-serif;}
+@font-face{font-family:'Next Up Black';src:url('./fonts/NextUpBlack.woff2') format('woff2'),url('./fonts/NextUpBlack.woff') format('woff');font-weight:900;font-style:normal;font-display:swap;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--bone);font-family:var(--next-up);overflow-x:hidden;cursor:crosshair;}
+a{color:inherit;text-decoration:none;}::selection{background:var(--indigo);color:var(--bone);}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");opacity:0.035;pointer-events:none;z-index:9998;}
+.nl-bar{position:fixed;top:0;left:0;right:0;z-index:350;display:block;overflow:hidden;border-bottom:1px solid rgba(242,237,228,0.07);padding:0.7rem 0;background:var(--black);text-decoration:none;}
+.nl-track{display:flex;animation:nl-scroll 22s linear infinite;white-space:nowrap;align-items:center;}
+.nl-bar:hover .nl-track{animation-play-state:paused;}
+.nl-item{display:flex;align-items:center;gap:20px;padding-right:20px;flex-shrink:0;}
+.nl-text{font-family:var(--anton);font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--bone);opacity:0.4;}
+.nl-text.accent{color:var(--gold);opacity:0.85;}
+.nl-dot{width:3px;height:3px;background:var(--indigo);border-radius:50%;flex-shrink:0;opacity:0.5;}
+@keyframes nl-scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+nav{position:fixed;top:38px;left:0;right:0;z-index:300;display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.5rem;}
+.nav-logo{font-family:var(--anton);font-size:1rem;letter-spacing:0.18em;color:var(--bone);mix-blend-mode:difference;}
+.menu-btn{background:none;border:none;cursor:pointer;display:flex;flex-direction:column;gap:5px;padding:6px;z-index:600;position:relative;}
+.menu-btn span{display:block;width:26px;height:1.5px;background:var(--bone);transition:transform 0.3s ease,opacity 0.3s ease;}
+.menu-btn.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
+.menu-btn.open span:nth-child(2){opacity:0;}
+.menu-btn.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
+.menu-scrim{position:fixed;inset:0;background:rgba(10,10,10,0.7);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.35s;}
+.menu-scrim.open{opacity:1;pointer-events:all;}
+.menu-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,88vw);background:var(--black);border-left:1px solid rgba(242,237,228,0.07);z-index:500;transform:translateX(100%);transition:transform 0.42s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;padding:5.5rem 2.5rem 3rem;overflow-y:auto;}
+.menu-drawer.open{transform:translateX(0);}
+.drawer-nav{display:flex;flex-direction:column;flex:1;}
+.drawer-link{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;border-bottom:1px solid rgba(242,237,228,0.06);transition:padding-left 0.2s;}
+.drawer-link:hover{padding-left:0.5rem;}
+.drawer-link-meta{display:flex;flex-direction:column;}
+.drawer-link-type{font-size:0.5rem;letter-spacing:0.3em;text-transform:uppercase;opacity:0.25;margin-bottom:0.2rem;}
+.drawer-link-name{font-family:var(--anton);font-size:clamp(1.5rem,5vw,2.4rem);text-transform:uppercase;line-height:1;transition:color 0.2s;}
+.drawer-link:hover .drawer-link-name{color:var(--indigo);}
+.drawer-footer{padding-top:2.5rem;border-top:1px solid rgba(242,237,228,0.06);display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;}
+.drawer-footer-links{display:flex;flex-wrap:wrap;gap:1.25rem 2rem;}
+.drawer-footer-link{font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.25;transition:opacity 0.2s;}
+.drawer-footer-link:hover{opacity:0.8;}
+.drawer-copy{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0.1;}
+.page-wrap{padding:10rem 2.5rem 6rem;max-width:900px;margin:0 auto;}
+.s-label{font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;opacity:0.25;margin-bottom:3rem;display:flex;align-items:center;gap:1rem;}
+.s-label::after{content:'';flex:1;height:1px;background:rgba(242,237,228,0.08);}
+.s-title{font-family:var(--anton);font-size:clamp(2.8rem,6.5vw,5rem);line-height:0.93;text-transform:uppercase;letter-spacing:-0.01em;margin-bottom:4rem;}
+.fade{opacity:0;transform:translateY(20px);transition:opacity 0.65s ease,transform 0.65s ease;}
+.fade.on{opacity:1;transform:none;}
+.optional-tag{display:inline-block;font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;border:1px solid rgba(92,0,255,0.4);color:var(--indigo);padding:0.28rem 0.7rem;margin-bottom:3rem;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-bottom:5rem;align-items:start;}
+.profile-form{display:flex;flex-direction:column;gap:1.25rem;}
+.form-field label{display:block;font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;opacity:0.35;margin-bottom:0.5rem;}
+.form-field input{width:100%;background:var(--gray);border:1px solid rgba(242,237,228,0.08);color:var(--bone);font-family:var(--next-up);font-size:0.82rem;letter-spacing:0.04em;padding:0.85rem 1rem;outline:none;transition:border-color 0.2s;-webkit-appearance:none;appearance:none;border-radius:0;}
+.form-field input:focus{border-color:rgba(92,0,255,0.5);}
+.form-field input::placeholder{opacity:0.25;}
+.save-btn{background:var(--indigo);border:none;color:var(--bone);font-family:var(--next-up);font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;padding:1rem;cursor:pointer;transition:opacity 0.2s;width:100%;}
+.save-btn:hover{opacity:0.85;}
+.save-confirm{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--indigo);opacity:0;transition:opacity 0.4s;margin-top:0.5rem;}
+.save-confirm.show{opacity:1;}
+.clear-btn{background:none;border:1px solid rgba(242,237,228,0.1);color:var(--bone);font-family:var(--next-up);font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.75rem;cursor:pointer;transition:border-color 0.2s;width:100%;opacity:0.4;}
+.clear-btn:hover{border-color:rgba(242,237,228,0.3);opacity:0.8;}
+.profile-note{font-size:0.7rem;line-height:1.9;opacity:0.3;letter-spacing:0.02em;}
+.orders-section{border-top:1px solid rgba(242,237,228,0.06);padding-top:4rem;}
+.order-empty{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.2;padding:3rem 0;}
+.order-card{background:var(--gray);padding:1.75rem;margin-bottom:1px;}
+.order-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;}
+.order-ref{font-family:var(--anton);font-size:0.82rem;letter-spacing:0.06em;text-transform:uppercase;}
+.order-date{font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;opacity:0.3;margin-top:0.2rem;}
+.order-total{font-family:var(--anton);font-size:1rem;color:var(--gold);}
+.order-items{display:flex;flex-direction:column;gap:0.4rem;border-top:1px solid rgba(242,237,228,0.05);padding-top:1rem;}
+.order-item{font-size:0.62rem;letter-spacing:0.1em;opacity:0.5;}
+footer{border-top:1px solid rgba(242,237,228,0.05);padding:2.75rem 2.5rem;display:flex;justify-content:space-between;align-items:center;background:var(--gray);flex-wrap:wrap;gap:1.5rem;}
+.footer-logo{font-family:var(--anton);font-size:1.3rem;letter-spacing:0.12em;}
+.footer-links{display:flex;gap:2rem;list-style:none;flex-wrap:wrap;}
+.footer-links a{font-size:0.56rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.2;transition:opacity 0.2s;}
+.footer-links a:hover{opacity:1;}
+.footer-copy{font-size:0.54rem;letter-spacing:0.1em;opacity:0.12;text-transform:uppercase;}
+@media(max-width:768px){nav{padding:1.25rem 1.5rem;}.profile-grid{grid-template-columns:1fr;gap:3rem;}footer{flex-direction:column;text-align:center;}.footer-links{justify-content:center;}}
+</style>
+</head>
+<body>
+<a class="nl-bar" href="newsletter.html" aria-label="Join the 360SPRNG newsletter — 10% off">
+  <div class="nl-track">
+    <div class="nl-item"><span class="nl-text">join the frat</span><div class="nl-dot"></div><span class="nl-text accent">10% off your first order</span><div class="nl-dot"></div><span class="nl-text">sign up now</span><div class="nl-dot"></div><span class="nl-text">live beyond life</span><div class="nl-dot"></div><span class="nl-text">360SPRNG</span><div class="nl-dot"></div><span class="nl-text accent">newsletter</span><div class="nl-dot"></div></div>
+    <div class="nl-item"><span class="nl-text">join the frat</span><div class="nl-dot"></div><span class="nl-text accent">10% off your first order</span><div class="nl-dot"></div><span class="nl-text">sign up now</span><div class="nl-dot"></div><span class="nl-text">live beyond life</span><div class="nl-dot"></div><span class="nl-text">360SPRNG</span><div class="nl-dot"></div><span class="nl-text accent">newsletter</span><div class="nl-dot"></div></div>
+    <div class="nl-item"><span class="nl-text">join the frat</span><div class="nl-dot"></div><span class="nl-text accent">10% off your first order</span><div class="nl-dot"></div><span class="nl-text">sign up now</span><div class="nl-dot"></div><span class="nl-text">live beyond life</span><div class="nl-dot"></div><span class="nl-text">360SPRNG</span><div class="nl-dot"></div><span class="nl-text accent">newsletter</span><div class="nl-dot"></div></div>
+  </div>
+</a>
+<nav>
+  <a href="index.html" class="nav-logo">360SPRNG</a>
+  <button class="menu-btn" id="menuBtn" onclick="toggleMenu()" aria-label="open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="menu-scrim" id="menuScrim" onclick="closeMenu()"></div>
+<aside class="menu-drawer" id="menuDrawer" role="dialog" aria-modal="true" aria-label="Navigation">
+  <nav class="drawer-nav">
+    <a href="index.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">home</div><div class="drawer-link-name">360SPRNG</div></div></a>
+    <a href="store.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">shop</div><div class="drawer-link-name">store</div></div></a>
+    <a href="lookbook.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">editorial</div><div class="drawer-link-name">lookbook</div></div></a>
+    <a href="community.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">join</div><div class="drawer-link-name">the frat</div></div></a>
+    <a href="about.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">brand</div><div class="drawer-link-name">about</div></div></a>
+    <a href="newsletter.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">10% off</div><div class="drawer-link-name">newsletter</div></div></a>
+  </nav>
+  <div class="drawer-footer">
+    <div class="drawer-footer-links">
+      <a href="https://instagram.com/360SPRNG" class="drawer-footer-link" target="_blank" rel="noopener">instagram</a>
+      <a href="https://linktr.ee/360SPRNG" class="drawer-footer-link" target="_blank" rel="noopener">linktree</a>
+      <a href="https://chat.whatsapp.com/Brltt0B1Di08Zi9uyXCXz3" class="drawer-footer-link" target="_blank" rel="noopener">whatsapp</a>
+      <a href="profile.html" class="drawer-footer-link">my profile</a>
+      <a href="terms.html" class="drawer-footer-link">terms</a>
+    </div>
+    <span class="drawer-copy">© 2026 360SPRNG</span>
+  </div>
+</aside>
+
+<div class="page-wrap">
+  <div class="s-label fade">my profile</div>
+  <h1 class="s-title fade">your<br>details.</h1>
+  <div class="optional-tag fade">optional — no account needed</div>
+
+  <div class="profile-grid">
+    <div class="fade">
+      <div class="profile-form">
+        <div class="form-field"><label>full name</label><input type="text" id="p-name" placeholder="your name" autocomplete="name"></div>
+        <div class="form-field"><label>email</label><input type="email" id="p-email" placeholder="your email" autocomplete="email"></div>
+        <div class="form-field"><label>phone</label><input type="tel" id="p-phone" placeholder="05X XXX XXXX" autocomplete="tel"></div>
+        <div class="form-section-label" style="font-size:0.52rem;letter-spacing:0.28em;text-transform:uppercase;opacity:0.25;padding:1rem 0 0.6rem;border-bottom:1px solid rgba(242,237,228,0.06);margin-top:0.5rem;">shipping address</div>
+        <div class="form-field"><label>country</label>
+          <select id="p-country" autocomplete="country" onchange="pUpdateState()" style="width:100%;background:var(--gray);border:1px solid rgba(242,237,228,0.08);color:var(--bone);font-family:var(--next-up);font-size:0.78rem;padding:0.85rem 1rem;outline:none;-webkit-appearance:none;appearance:none;border-radius:0;cursor:pointer;">
+            <optgroup label="— Africa —"><option value="GH" selected>Ghana</option><option value="NG">Nigeria</option><option value="CI">Côte d'Ivoire</option><option value="SN">Senegal</option><option value="KE">Kenya</option><option value="ZA">South Africa</option><option value="ET">Ethiopia</option><option value="TZ">Tanzania</option><option value="UG">Uganda</option><option value="CM">Cameroon</option><option value="BJ">Benin</option><option value="TG">Togo</option><option value="BF">Burkina Faso</option><option value="ML">Mali</option><option value="GN">Guinea</option><option value="SL">Sierra Leone</option><option value="LR">Liberia</option><option value="EG">Egypt</option></optgroup>
+            <optgroup label="— Europe —"><option value="GB">United Kingdom</option><option value="DE">Germany</option><option value="FR">France</option><option value="NL">Netherlands</option><option value="IT">Italy</option><option value="ES">Spain</option><option value="SE">Sweden</option><option value="NO">Norway</option><option value="DK">Denmark</option><option value="BE">Belgium</option><option value="CH">Switzerland</option><option value="AT">Austria</option><option value="PT">Portugal</option><option value="FI">Finland</option><option value="IE">Ireland</option></optgroup>
+            <optgroup label="— North America —"><option value="US">United States</option><option value="CA">Canada</option><option value="MX">Mexico</option></optgroup>
+            <optgroup label="— Other —"><option value="AU">Australia</option><option value="NZ">New Zealand</option><option value="AE">United Arab Emirates</option><option value="JP">Japan</option><option value="BR">Brazil</option><option value="CN">China</option><option value="IN">India</option><option value="OTHER">Other</option></optgroup>
+          </select>
+        </div>
+        <div class="form-field"><label>address line 1</label><input type="text" id="p-addr1" placeholder="street number and street name" autocomplete="address-line1"></div>
+        <div class="form-field"><label>address line 2 <span style="opacity:0.4;font-size:0.75em">(optional)</span></label><input type="text" id="p-addr2" placeholder="apartment, suite, unit, building" autocomplete="address-line2"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+          <div class="form-field"><label>city / town</label><input type="text" id="p-city" placeholder="city" autocomplete="address-level2"></div>
+          <div class="form-field"><label id="p-state-label">state / region</label>
+            <select id="p-region-gh" style="width:100%;background:var(--gray);border:1px solid rgba(242,237,228,0.08);color:var(--bone);font-family:var(--next-up);font-size:0.78rem;padding:0.85rem 1rem;outline:none;-webkit-appearance:none;appearance:none;border-radius:0;cursor:pointer;">
+              <option value="" disabled selected>select region</option>
+              <option>Ahafo</option><option>Ashanti</option><option>Bono</option><option>Bono East</option><option>Central</option><option>Eastern</option><option>Greater Accra</option><option>North East</option><option>Northern</option><option>Oti</option><option>Savannah</option><option>Upper East</option><option>Upper West</option><option>Volta</option><option>Western</option><option>Western North</option>
+            </select>
+            <input type="text" id="p-region-other" placeholder="state / province / region" autocomplete="address-level1" style="display:none;width:100%;background:var(--gray);border:1px solid rgba(242,237,228,0.08);color:var(--bone);font-family:var(--next-up);font-size:0.78rem;padding:0.85rem 1rem;outline:none;border-radius:0;">
+          </div>
+        </div>
+        <div class="form-field"><label>postal / zip code <span style="opacity:0.4;font-size:0.75em">(optional)</span></label><input type="text" id="p-postal" placeholder="postal / zip code" autocomplete="postal-code"></div>
+        <div class="form-field" id="p-digital-wrap"><label>digital address <span style="opacity:0.4;font-size:0.75em">(Ghana only)</span></label><input type="text" id="p-digital" placeholder="e.g. GA-123-4567"></div>
+        <button class="save-btn" onclick="saveProfile()">save details</button>
+        <div class="save-confirm" id="saveConfirm">saved — details will pre-fill at checkout</div>
+        <button class="clear-btn" onclick="clearProfile()" style="margin-top:0.5rem">clear saved details</button>
+      </div>
+    </div>
+    <div class="fade" style="transition-delay:.1s">
+      <p class="profile-note">
+        your details are saved locally on this device only — nothing is sent to a server.<br><br>
+        when you check out, your saved name, email, and phone will pre-fill automatically so you don't have to type them again.<br><br>
+        you can clear your saved details at any time. no account needed. no password. just convenience for returning customers.
+      </p>
+    </div>
+  </div>
+
+  <div class="orders-section fade">
+    <div class="s-label">order history</div>
+    <div id="ordersContainer"><div class="order-empty">no orders yet.</div></div>
+    <button class="clear-btn" id="clearOrdersBtn" onclick="clearOrders()" style="margin-top:2rem;display:none">clear order history</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">360SPRNG</div>
+  <ul class="footer-links">
+    <li><a href="store.html">store</a></li>
+    <li><a href="lookbook.html">lookbook</a></li>
+    <li><a href="community.html">the frat</a></li>
+    <li><a href="about.html">about</a></li>
+    <li><a href="newsletter.html">newsletter</a></li>
+    <li><a href="terms.html">terms</a></li>
+    <li><a href="https://instagram.com/360SPRNG" target="_blank" rel="noopener">instagram</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 360SPRNG</span>
+</footer>
+
+<script>
+function pUpdateState(){
+  const country=document.getElementById('p-country').value;
+  const ghSel=document.getElementById('p-region-gh');
+  const otherInp=document.getElementById('p-region-other');
+  const lbl=document.getElementById('p-state-label');
+  const dWrap=document.getElementById('p-digital-wrap');
+  if(country==='GH'){
+    if(ghSel)ghSel.style.display='block';if(otherInp)otherInp.style.display='none';
+    if(lbl)lbl.textContent='region';if(dWrap)dWrap.style.display='';
+  } else if(country==='US'||country==='CA'){
+    if(ghSel)ghSel.style.display='none';if(otherInp){otherInp.style.display='block';otherInp.placeholder='state / province';}
+    if(lbl)lbl.textContent='state / province';if(dWrap)dWrap.style.display='none';
+  } else {
+    if(ghSel)ghSel.style.display='none';if(otherInp){otherInp.style.display='block';otherInp.placeholder='state / province / region';}
+    if(lbl)lbl.textContent='state / region';if(dWrap)dWrap.style.display='none';
+  }
+}
+function loadProfile(){
+  const p=JSON.parse(localStorage.getItem('360_profile')||'{}');
+  document.getElementById('p-name').value=p.name||'';
+  document.getElementById('p-email').value=p.email||'';
+  document.getElementById('p-phone').value=p.phone||'';
+  if(p.country){document.getElementById('p-country').value=p.country;pUpdateState();}
+  document.getElementById('p-addr1').value=p.addr1||'';
+  document.getElementById('p-addr2').value=p.addr2||'';
+  document.getElementById('p-city').value=p.city||'';
+  const ghSel=document.getElementById('p-region-gh');
+  const otherInp=document.getElementById('p-region-other');
+  if(p.region&&p.country==='GH'&&ghSel)ghSel.value=p.region;
+  if(p.region&&p.country!=='GH'&&otherInp)otherInp.value=p.region;
+  document.getElementById('p-postal').value=p.postal||'';
+  const dig=document.getElementById('p-digital');if(dig)dig.value=p.digital||'';
+}
+function saveProfile(){
+  const name=document.getElementById('p-name').value.trim();
+  const email=document.getElementById('p-email').value.trim();
+  const phone=document.getElementById('p-phone').value.trim();
+  const country=document.getElementById('p-country').value;
+  const addr1=document.getElementById('p-addr1').value.trim();
+  const addr2=document.getElementById('p-addr2').value.trim();
+  const city=document.getElementById('p-city').value.trim();
+  const ghSel=document.getElementById('p-region-gh');
+  const otherInp=document.getElementById('p-region-other');
+  const region=country==='GH'?(ghSel?ghSel.value:''):(otherInp?otherInp.value.trim():'');
+  const postal=document.getElementById('p-postal').value.trim();
+  const digital=(document.getElementById('p-digital')||{}).value||'';
+  localStorage.setItem('360_profile',JSON.stringify({name,email,phone,country,addr1,addr2,city,region,postal,digital}));
+  const confirm=document.getElementById('saveConfirm');confirm.classList.add('show');
+  setTimeout(()=>confirm.classList.remove('show'),3000);
+}
+function clearProfile(){
+  localStorage.removeItem('360_profile');
+  ['p-name','p-email','p-phone','p-addr1','p-addr2','p-city','p-postal','p-digital','p-region-other'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const ghSel=document.getElementById('p-region-gh');if(ghSel)ghSel.value='';
+  const csel=document.getElementById('p-country');if(csel){csel.value='GH';pUpdateState();}
+}
+function renderOrders(){
+  const orders=JSON.parse(localStorage.getItem('360_orders')||'[]');
+  const container=document.getElementById('ordersContainer');
+  const clearBtn=document.getElementById('clearOrdersBtn');
+  if(orders.length===0){container.innerHTML='<div class="order-empty">no orders yet.</div>';clearBtn.style.display='none';return;}
+  clearBtn.style.display='block';
+  container.innerHTML=orders.map(o=>{
+    const date=new Date(o.date).toLocaleDateString('en-GH',{day:'numeric',month:'long',year:'numeric'});
+    const items=o.items.map(i=>`<div class="order-item">${i.name} · ${i.variant} · size ${i.size} × ${i.qty}</div>`).join('');
+    const s=o.shipping||{};
+    const addr=s.addr1?[s.addr1,s.addr2,s.city,s.region,s.country].filter(Boolean).join(', '):'';
+    const notes=s.notes?`<div class="order-item" style="opacity:0.4;margin-top:0.25rem">note: ${s.notes}</div>`:'';
+    const addrLine=addr?`<div class="order-item order-addr" style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(242,237,228,0.05);opacity:0.4">${addr}</div>`:'';
+    return `<div class="order-card"><div class="order-head"><div><div class="order-ref">${o.ref}</div><div class="order-date">${date} · ${o.name||''}</div></div><div class="order-total">GH₵ ${o.total}</div></div><div class="order-items">${items}${addrLine}${notes}</div></div>`;
+  }).join('');
+}
+function clearOrders(){
+  if(!confirm('clear all order history?'))return;
+  localStorage.removeItem('360_orders');renderOrders();
+}
+function toggleMenu(){const btn=document.getElementById('menuBtn'),drawer=document.getElementById('menuDrawer'),scrim=document.getElementById('menuScrim');const opening=!drawer.classList.contains('open');btn.classList.toggle('open');drawer.classList.toggle('open');scrim.classList.toggle('open');document.body.style.overflow=opening?'hidden':'';btn.setAttribute('aria-expanded',opening);}
+function closeMenu(){document.getElementById('menuBtn').classList.remove('open');document.getElementById('menuDrawer').classList.remove('open');document.getElementById('menuScrim').classList.remove('open');document.body.style.overflow='';document.getElementById('menuBtn').setAttribute('aria-expanded','false');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+loadProfile();renderOrders();
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:0.08});
+document.querySelectorAll('.fade').forEach(el=>obs.observe(el));
+</script>
+
+<script type="text/javascript">
+        window.omnisend = window.omnisend || [];
+        omnisend.push(["brandID", "6a0a57539c08a1ea4981408a"]);
+        omnisend.push(["track", "$pageViewed"]);
+        !function(){var e=document.createElement("script");
+        e.type="text/javascript",e.async=!0,
+        e.src="https://omnisnippet1.com/inshop/launcher-v2.js";
+        var t=document.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(e,t)}();
+</script>
+  
+</body>
+</html>

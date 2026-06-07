@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manifesto — 360SPRNG</title>
+    <meta name="description" content="360SPRNG exists because some of us heard the word waste and built anyway. Live Beyond Life.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet">
+     <meta name="description"
+    content="360SPRNG — Ghanaian streetwear brand built for African creatives. Limited drops. Live Beyond Life.">
+  <meta name="keywords" content="Ghanaian streetwear, African streetwear, limited drop clothing, African creative brand, Ghana fashion, 360SPRNG, BEYOND I collection, 360SPRNG, 360SPRNG clothing, 360SPRNG Ghana, 360SPRNG streetwear, Live Beyond Life, 360SPRNG fashion, 360SPRNG apparel, 360SPRNG official, 360SPRNG brand, 360SPRING, 360SPRING clothing, 360SPRING Ghana, 360SPRING streetwear, 360SPRING fashion, 360SPRING apparel, 360SPRING official, 360SPRING brand, Ghanaian streetwear brand, African streetwear brand, luxury streetwear Ghana, premium streetwear Africa, designer streetwear Ghana, creative fashion Ghana, Ghana streetwear, streetwear Ghana, Accra streetwear, Ghana fashion brand, African street fashion, African luxury streetwear, African designer clothing, African creative fashion, African youth fashion, modern African fashion, contemporary African streetwear, African fashion label, African fashion movement, African street culture, African urban fashion
+">
+
+    <style>
+        :root {
+            --midnight: #0A0A0A;
+            --raw-bone: #F2EDE4;
+            --indigo: #5C00FF;
+            --gold: #C9922A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--midnight);
+            color: var(--raw-bone);
+            font-family: 'Courier Prime', monospace;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2.5rem;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-logo {
+            font-family: 'Anton', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            color: var(--raw-bone);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'Anton', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 0.22em;
+            color: var(--raw-bone);
+            text-decoration: none;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            opacity: 1;
+        }
+
+        /* ── MAIN ── */
+        main {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 14rem 2.5rem 10rem;
+        }
+
+        /* ── HERO ── */
+        .hero-label {
+            font-family: 'Anton', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 0.4em;
+            color: var(--indigo);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 0.2s;
+        }
+
+        .hero-title {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(3.8rem, 9vw, 7.5rem);
+            line-height: 0.93;
+            letter-spacing: -0.01em;
+            color: var(--raw-bone);
+            margin-bottom: 6rem;
+            opacity: 0;
+            animation: fadeUp 0.9s ease forwards 0.4s;
+        }
+
+        /* ── SECTIONS ── */
+        .manifesto-section {
+            margin-bottom: 3.5rem;
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.75s ease, transform 0.75s ease;
+        }
+
+        .manifesto-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .manifesto-section p {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 2;
+            color: var(--raw-bone);
+            opacity: 0.82;
+        }
+
+        .gap {
+            display: block;
+            height: 1rem;
+        }
+
+        /* ── WASTE LINE ── */
+        .waste-line {
+            font-family: 'Courier Prime', monospace;
+            font-style: italic;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--indigo);
+            letter-spacing: 0.04em;
+            margin-top: 2rem;
+            display: block;
+            opacity: 0;
+            animation: none;
+        }
+
+        .waste-line.visible {
+            animation: wasteReveal 0.6s ease forwards;
+        }
+
+        @keyframes wasteReveal {
+            0%   { opacity: 0; letter-spacing: 0.2em; }
+            60%  { opacity: 1; letter-spacing: 0.02em; }
+            100% { opacity: 1; letter-spacing: 0.04em; }
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            width: 1px;
+            height: 4rem;
+            background: var(--raw-bone);
+            opacity: 0.12;
+            margin: 0 0 3.5rem 0;
+        }
+
+        /* ── CLOSING ── */
+        .closing-declaration p {
+            font-style: italic;
+            font-size: clamp(1rem, 2.2vw, 1.15rem);
+            line-height: 2.1;
+            opacity: 0.88;
+        }
+
+        .closing-brand {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(4.5rem, 11vw, 8.5rem);
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            color: var(--raw-bone);
+            margin-top: 1.5rem;
+            display: block;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            nav { padding: 1.2rem 1.5rem; }
+            .nav-links { gap: 1.2rem; }
+            .nav-links a { font-size: 0.58rem; }
+            main { padding: 10rem 1.5rem 7rem; }
+        }
+
+        @media (max-width: 520px) {
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/" class="nav-logo">360SPRNG</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/lookbook">Lookbook</a></li>
+            <li><a href="/the-frat">The Frat</a></li>
+            <li><a href="/about" class="active">Manifesto</a></li>
+            <li><a href="/newsletter">Newsletter</a></li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <p class="hero-label">360SPRNG</p>
+        <h1 class="hero-title">LIVE<br>BEYOND<br>LIFE</h1>
+
+        <!-- Block 1 -->
+        <div class="manifesto-section">
+            <p>they had a plan for you.</p>
+            <span class="gap"></span>
+            <p>degree. job. family. repeat.</p>
+        </div>
+
+        <!-- Block 2 -->
+        <div class="manifesto-section">
+            <p>a life already written before you had anything to say about it. clean. predictable. safe. and if you deviated. if you picked up a pen, opened a canvas, chased something that lived in your chest instead of on a checklist. they had a word for that too.</p>
+            <span class="waste-line">waste.</span>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Block 3 -->
+        <div class="manifesto-section">
+            <p>360SPRNG exists because some of us heard that word and built anyway.</p>
+            <span class="gap"></span>
+            <p>not in spite of the pressure. through it. underneath it. in the hours nobody sanctioned. with tools nobody handed us. toward something nobody could see yet but us.</p>
+        </div>
+
+        <!-- Block 4 -->
+        <div class="manifesto-section">
+            <p>this is not a brand for everyone. it was never meant to be.</p>
+            <span class="gap"></span>
+            <p>it's for the ones who felt the weight of a life prescribed by someone else and chose the harder, realer thing. the ones who understand that there is a version of you that dies quietly if you let it.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Block 5 -->
+        <div class="manifesto-section">
+            <p>the frat is everyone who made the same refusal.</p>
+            <span class="gap"></span>
+            <p>not a following. not an audience. a body of people who understood the cost of choosing their own life and paid it anyway.</p>
+            <span class="gap"></span>
+            <p>if you found this, something in you already recognized it.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Closing -->
+        <div class="manifesto-section closing-declaration">
+            <p>live beyond life.</p>
+            <span class="gap"></span>
+            <p>beyond the life they handed you. beyond the version of you they were comfortable with. beyond the quiet death of becoming what someone else needed you to be.</p>
+        </div>
+
+        <div class="manifesto-section">
+            <span class="closing-brand">360SPRNG.</span>
+        </div>
+
+    </main>
+
+    <script>
+        const sections = document.querySelectorAll('.manifesto-section');
+        const wasteLine = document.querySelector('.waste-line');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // trigger waste line animation after parent section is visible
+                    if (entry.target.contains(wasteLine)) {
+                        setTimeout(() => wasteLine.classList.add('visible'), 400);
+                    }
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+    <script type="text/javascript">
+        window.omnisend = window.omnisend || [];
+        omnisend.push(["brandID", "6a0a57539c08a1ea4981408a"]);
+        omnisend.push(["track", "$pageViewed"]);
+        !function(){var e=document.createElement("script");
+        e.type="text/javascript",e.async=!0,
+        e.src="https://omnisnippet1.com/inshop/launcher-v2.js";
+        var t=document.getElementsByTagName("script")[0];
+        t.parentNode.insertBefore(e,t)}();
+</script>
+
+</body>
+</html>
