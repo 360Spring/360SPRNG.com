@@ -317,16 +317,9 @@
     .pdp-size-error { font-size: clamp(0.65rem, 1.5vw, 0.75rem); letter-spacing: 0.12em; color: #ff4444; display: none; margin-bottom: 0.75rem; }
     .pdp-size-error.show { display: block; }
 
-    .pdp-add-btn { width: 100%; background: var(--bone); border: none; color: var(--black); font-family: var(--next-up); font-size: clamp(0.72rem, 1.8vw, 0.88rem); letter-spacing: 0.28em; text-transform: uppercase; padding: 1.2rem; cursor: pointer; transition: background 0.2s, color 0.2s; margin-bottom: 0.75rem; }
-    .pdp-add-btn:hover { background: var(--gray-mid); color: var(--bone); }
-    .pdp-add-btn.sold-out-state { background: var(--gray-mid); color: var(--bone); opacity: 0.35; cursor: not-allowed; }
-
-    .pdp-sold-note { font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.3; text-align: center; margin-bottom: 1rem; }
-
-    .pdp-details { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(242, 237, 228, 0.06); display: flex; flex-direction: column; gap: 0.6rem; }
-    .pdp-detail-row { display: flex; justify-content: space-between; font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.45; }
-    .pdp-detail-row span:last-child { opacity: 0.8; color: var(--bone); }
-
+    .pdp-sizing-guide { display: none; font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.22em; text-transform: uppercase; color: var(--indigo); opacity: 0.7; margin-bottom: 1.25rem; transition: opacity 0.2s; text-decoration: none; }
+    .pdp-sizing-guide:hover { opacity: 1; }
+    .pdp-sizing-guide.show { display: inline-block; }
     /* ══════════════════════════════════════════════════════
        MOBILE PDP — full portrait image
     ══════════════════════════════════════════════════════ */
@@ -560,12 +553,9 @@
             <div class="pdp-section-label">colour</div>
             <div class="pdp-variants" id="pdpVariants"></div>
           </div>
-          <div class="pdp-section-label">select size</div>
-          <div class="pdp-sizes" id="pdpSizes"></div>
-          <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
-          <button class="pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">add to cart</button>
-          <div class="pdp-sold-note" id="pdpSoldNote" style="display:none">this piece is sold out — no restock</div>
-          <div class="pdp-details" id="pdpDetails"></div>
+        <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
+          <a class="pdp-sizing-guide" id="pdpSizingGuide" href="./assets/sizing-guide.png" target="_blank" rel="noopener">sizing guide →</a>
+          <button class="pdp-add-btn"
         </div>
       </div>
     </div>
@@ -732,7 +722,9 @@
       });
       document.getElementById('pdpSizeError').classList.remove('show');
       const addBtn = document.getElementById('pdpAddBtn'), soldNote = document.getElementById('pdpSoldNote');
-      addBtn.textContent = 'add to cart'; addBtn.classList.remove('sold-out-state'); soldNote.style.display = 'none';
+addBtn.textContent = 'add to cart'; addBtn.classList.remove('sold-out-state'); soldNote.style.display = 'none';
+      document.getElementById('pdpSizingGuide').classList.remove('show');
+      document.getElementById('pdpSizingGuide').classList.remove('show');
       const detailsWrap = document.getElementById('pdpDetails'); detailsWrap.innerHTML = '';
       (p.details || []).forEach(d => {
         const row = document.createElement('div'); row.className = 'pdp-detail-row';
@@ -768,6 +760,7 @@
       document.querySelectorAll('.pdp-size-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected'); pdpSelectedSize = size;
       document.getElementById('pdpSizeError').classList.remove('show');
+      document.getElementById('pdpSizingGuide').classList.add('show');
     }
     function pdpAddToCart() {
       if (!pdpSelectedSize) { document.getElementById('pdpSizeError').classList.add('show'); return; }
