@@ -320,6 +320,17 @@
     .pdp-sizing-guide { display: none; font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.22em; text-transform: uppercase; color: var(--indigo); opacity: 0.7; margin-bottom: 1.25rem; transition: opacity 0.2s; text-decoration: none; }
     .pdp-sizing-guide:hover { opacity: 1; }
     .pdp-sizing-guide.show { display: inline-block; }
+
+    .pdp-add-btn { width: 100%; background: var(--bone); border: none; color: var(--black); font-family: var(--next-up); font-size: clamp(0.72rem, 1.8vw, 0.88rem); letter-spacing: 0.28em; text-transform: uppercase; padding: 1.2rem; cursor: pointer; transition: background 0.2s, color 0.2s; margin-bottom: 0.75rem; }
+    .pdp-add-btn:hover { background: var(--gray-mid); color: var(--bone); }
+    .pdp-add-btn.sold-out-state { background: var(--gray-mid); color: var(--bone); opacity: 0.35; cursor: not-allowed; }
+
+    .pdp-sold-note { font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.3; text-align: center; margin-bottom: 1rem; }
+
+    .pdp-details { margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(242, 237, 228, 0.06); display: flex; flex-direction: column; gap: 0.6rem; }
+    .pdp-detail-row { display: flex; justify-content: space-between; font-size: clamp(0.6rem, 1.5vw, 0.7rem); letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.45; }
+    .pdp-detail-row span:last-child { opacity: 0.8; color: var(--bone); }
+
     /* ══════════════════════════════════════════════════════
        MOBILE PDP — full portrait image
     ══════════════════════════════════════════════════════ */
@@ -431,6 +442,7 @@
       <a href="community.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">join</div><div class="drawer-link-name">the frat</div></div></a>
       <a href="about.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">brand</div><div class="drawer-link-name">manifesto</div></div></a>
       <a href="newsletter.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">10% off</div><div class="drawer-link-name">newsletter</div></div></a>
+      <a href="archive.html" class="drawer-link"><div class="drawer-link-meta"><div class="drawer-link-type">past drops</div><div class="drawer-link-name">archive</div></div></a>
     </nav>
   </aside>
 
@@ -553,9 +565,13 @@
             <div class="pdp-section-label">colour</div>
             <div class="pdp-variants" id="pdpVariants"></div>
           </div>
-        <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
+          <div class="pdp-section-label">select size</div>
+          <div class="pdp-sizes" id="pdpSizes"></div>
+          <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
           <a class="pdp-sizing-guide" id="pdpSizingGuide" href="./assets/sizing-guide.png" target="_blank" rel="noopener">sizing guide →</a>
-          <button class="pdp-add-btn"
+          <button class="pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">add to cart</button>
+          <div class="pdp-sold-note" id="pdpSoldNote" style="display:none">this piece is sold out — no restock</div>
+          <div class="pdp-details" id="pdpDetails"></div>
         </div>
       </div>
     </div>
@@ -623,7 +639,6 @@
     <ul class="footer-links">
       <li><a href="store.html">store</a></li>
       <li><a href="lookbook.html">lookbook</a></li>
-      <li><a href="./assets/sizing-guide.png" target="_blank" rel="noopener">sizing guide</a></li>
       <li><a href="https://instagram.com/360SPRNG" target="_blank" rel="noopener">instagram</a></li>
     </ul>
     <span class="footer-copy">© 2026 360SPRNG</span>
@@ -721,10 +736,9 @@
         sizesWrap.appendChild(btn);
       });
       document.getElementById('pdpSizeError').classList.remove('show');
+      document.getElementById('pdpSizingGuide').classList.remove('show');
       const addBtn = document.getElementById('pdpAddBtn'), soldNote = document.getElementById('pdpSoldNote');
-addBtn.textContent = 'add to cart'; addBtn.classList.remove('sold-out-state'); soldNote.style.display = 'none';
-      document.getElementById('pdpSizingGuide').classList.remove('show');
-      document.getElementById('pdpSizingGuide').classList.remove('show');
+      addBtn.textContent = 'add to cart'; addBtn.classList.remove('sold-out-state'); soldNote.style.display = 'none';
       const detailsWrap = document.getElementById('pdpDetails'); detailsWrap.innerHTML = '';
       (p.details || []).forEach(d => {
         const row = document.createElement('div'); row.className = 'pdp-detail-row';
