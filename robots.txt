@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /coming-soon.html
+Disallow: /profile.html
+Allow: /
+
+Sitemap: https://360sprng.com/sitemap.xml
