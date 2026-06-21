@@ -101,6 +101,10 @@
     // 5. Go to your profile > SMTP & API > API Keys > Generate API key
     // 6. Paste it below as BREVO_API_KEY
     //
+    // ⚠️  SECURITY: Never commit a real API key here — this file is public.
+    //     If you need server-side email handling, route through /api/subscribe
+    //     in _worker.js and store the key as a Worker Secret instead.
+    //
     // Emails will also always save locally to localStorage as backup.
     // ══════════════════════════════════════════════════════════════════════
     const BREVO_API_KEY = ''; // paste your Brevo API key here
