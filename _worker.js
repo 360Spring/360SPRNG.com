@@ -1,9 +1,30 @@
 const ALLOWED_ORIGIN = 'https://360sprng.com';
 
+/* ── Kill switch — flip to false to redirect all traffic to coming-soon ── */
+const SITE_LIVE = true;
+
 const cors = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Key',
+};
+
+/* ── Security headers added to every response ── */
+const securityHeaders = {
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+  'Content-Security-Policy': [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://js.paystack.co",
+    "connect-src 'self' https://api.paystack.co https://api.brevo.com",
+    "img-src 'self' data: blob:",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self' data:",
+    "frame-src https://js.paystack.co",
+  ].join('; '),
 };
 
 export default {
@@ -12,7 +33,12 @@ export default {
 
     /* ── CORS preflight ── */
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: cors });
+      return new Response(null, { status: 204, headers: { ...cors, ...securityHeaders } });
+    }
+
+    /* ── Kill switch — server-side enforcement ── */
+    if (!SITE_LIVE && !url.pathname.includes('coming-soon')) {
+      return Response.redirect('https://360sprng.com/coming-soon.html', 302);
     }
 
     /* ── POST /api/orders — write confirmed order to D1 ── */
@@ -48,7 +74,8 @@ export default {
 
         return json({ ok: true }, 200);
       } catch (e) {
-        return json({ error: e.message }, 500);
+        console.error('Order insert failed:', e);
+        return json({ error: 'order submission failed' }, 500);
       }
     }
 
@@ -65,13 +92,21 @@ export default {
     }
 
     /* ── everything else → static assets ── */
-    return env.ASSETS.fetch(request);
+    const assetRes = await env.ASSETS.fetch(request);
+    return addSecurityHeaders(assetRes);
   }
 };
 
 function json(data, status) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...cors, 'Content-Type': 'application/json' },
+    headers: { ...cors, ...securityHeaders, 'Content-Type': 'application/json' },
   });
+}
+
+/* ── Attach security headers to any Response without mutating the original ── */
+function addSecurityHeaders(response) {
+  const res = new Response(response.body, response);
+  Object.entries(securityHeaders).forEach(([k, v]) => res.headers.set(k, v));
+  return res;
 }
