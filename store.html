@@ -646,6 +646,11 @@
 
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <script>
+    /* ── XSS helper — escapes user-controlled strings before innerHTML ── */
+    function esc(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
     /* ════════════════════════════════════════════════════════════
        LOCK SCREEN — REMOVED (store unlocked)
     ════════════════════════════════════════════════════════════ */
@@ -819,9 +824,9 @@
       Array.from(container.children).forEach(c => { if (c !== empty) c.remove(); });
       cart.forEach((item, idx) => {
         const row = document.createElement('div'); row.className = 'cart-item';
-        row.innerHTML = `<img class="cart-item-img" src="${item.img}" onerror="this.outerHTML='<div class=cart-item-img-ph>—</div>'" alt="${item.name}">
-          <div><div class="cart-item-name">${item.name}</div><div class="cart-item-var">${item.variant}</div><div class="cart-item-size">size: ${item.size}</div>
-          <div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${idx},-1)">−</button><span class="qty-num">${item.qty}</span><button class="qty-btn" onclick="changeQty(${idx},1)">+</button></div>
+        row.innerHTML = `<img class="cart-item-img" src="${esc(item.img)}" onerror="this.outerHTML='<div class=cart-item-img-ph>—</div>'" alt="${esc(item.name)}">
+          <div><div class="cart-item-name">${esc(item.name)}</div><div class="cart-item-var">${esc(item.variant)}</div><div class="cart-item-size">size: ${esc(item.size)}</div>
+          <div class="cart-item-qty"><button class="qty-btn" onclick="changeQty(${idx},-1)">−</button><span class="qty-num">${esc(item.qty)}</span><button class="qty-btn" onclick="changeQty(${idx},1)">+</button></div>
           <button class="cart-item-remove" onclick="removeFromCart(${idx})">remove</button></div>
           <div class="cart-item-price">GH₵ ${item.price * item.qty}</div>`;
         container.appendChild(row);
@@ -914,7 +919,7 @@
       const digital = document.getElementById('co-digital'); if (digital) digital.value = profile.digital || '';
       document.getElementById('co-notes').value = profile.notes || '';
       const summary = document.getElementById('checkoutSummary');
-      summary.innerHTML = cart.map(i => `<div class="checkout-order-row"><span>${i.name} · ${i.size} × ${i.qty}</span><span>GH₵ ${i.price * i.qty}</span></div>`).join('') +
+      summary.innerHTML = cart.map(i => `<div class="checkout-order-row"><span>${esc(i.name)} · ${esc(i.size)} × ${esc(i.qty)}</span><span>GH₵ ${i.price * i.qty}</span></div>`).join('') +
         `<div class="checkout-order-row total"><span>total</span><span>GH₵ ${cartTotal()}</span></div>`;
       document.getElementById('checkout-error').classList.remove('show');
       document.getElementById('checkoutOverlay').classList.add('open');
