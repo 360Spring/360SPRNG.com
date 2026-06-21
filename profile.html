@@ -191,6 +191,7 @@ footer{border-top:1px solid rgba(242,237,228,0.05);padding:2.75rem 2.5rem;displa
 </footer>
 
 <script>
+function esc(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function pUpdateState(){
   const country=document.getElementById('p-country').value;
   const ghSel=document.getElementById('p-region-gh');
@@ -255,12 +256,12 @@ function renderOrders(){
   clearBtn.style.display='block';
   container.innerHTML=orders.map(o=>{
     const date=new Date(o.date).toLocaleDateString('en-GH',{day:'numeric',month:'long',year:'numeric'});
-    const items=o.items.map(i=>`<div class="order-item">${i.name} · ${i.variant} · size ${i.size} × ${i.qty}</div>`).join('');
+    const items=o.items.map(i=>`<div class="order-item">${esc(i.name)} · ${esc(i.variant)} · size ${esc(i.size)} × ${esc(i.qty)}</div>`).join('');
     const s=o.shipping||{};
-    const addr=s.addr1?[s.addr1,s.addr2,s.city,s.region,s.country].filter(Boolean).join(', '):'';
-    const notes=s.notes?`<div class="order-item" style="opacity:0.4;margin-top:0.25rem">note: ${s.notes}</div>`:'';
+    const addr=s.addr1?[s.addr1,s.addr2,s.city,s.region,s.country].filter(Boolean).map(esc).join(', '):'';
+    const notes=s.notes?`<div class="order-item" style="opacity:0.4;margin-top:0.25rem">note: ${esc(s.notes)}</div>`:'';
     const addrLine=addr?`<div class="order-item order-addr" style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid rgba(242,237,228,0.05);opacity:0.4">${addr}</div>`:'';
-    return `<div class="order-card"><div class="order-head"><div><div class="order-ref">${o.ref}</div><div class="order-date">${date} · ${o.name||''}</div></div><div class="order-total">GH₵ ${o.total}</div></div><div class="order-items">${items}${addrLine}${notes}</div></div>`;
+    return `<div class="order-card"><div class="order-head"><div><div class="order-ref">${esc(o.ref)}</div><div class="order-date">${esc(date)} · ${esc(o.name||'')}</div></div><div class="order-total">GH₵ ${esc(o.total)}</div></div><div class="order-items">${items}${addrLine}${notes}</div></div>`;
   }).join('');
 }
 function clearOrders(){
