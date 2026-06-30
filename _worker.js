@@ -18,11 +18,11 @@ const securityHeaders = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://js.paystack.co",
-    "connect-src 'self' https://api.paystack.co https://api.brevo.com",
-    "img-src 'self' data: blob:",
-    "style-src 'self' 'unsafe-inline'",
-    "font-src 'self' data:",
+    "script-src 'self' 'unsafe-inline' https://js.paystack.co https://omnisnippet1.com",
+    "connect-src 'self' https://api.paystack.co https://api.brevo.com https://omnisnippet1.com https://tracking.omnisend.com",
+    "img-src 'self' data: blob: https://omnisnippet1.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' data: https://fonts.gstatic.com",
     "frame-src https://js.paystack.co",
   ].join('; '),
 };
