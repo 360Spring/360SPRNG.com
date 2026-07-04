@@ -79,6 +79,46 @@ export default {
       }
     }
 
+    /* ── POST /api/newsletter — subscribe an email via Brevo ── */
+    if (url.pathname === '/api/newsletter' && request.method === 'POST') {
+      try {
+        const b = await request.json();
+        const email = (b.email || '').trim();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        if (!emailOk) return json({ error: 'invalid email' }, 400);
+        if (!env.BREVO_API_KEY) {
+          console.error('BREVO_API_KEY is not configured');
+          return json({ error: 'newsletter signup is temporarily unavailable' }, 500);
+        }
+
+        const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'api-key': env.BREVO_API_KEY,
+          },
+          body: JSON.stringify({
+            email,
+            updateEnabled: true,
+            ...(env.BREVO_NEWSLETTER_LIST_ID ? { listIds: [Number(env.BREVO_NEWSLETTER_LIST_ID)] } : {}),
+          }),
+        });
+
+        // Brevo returns 201 for new contacts, 204 for an update to an existing one.
+        if (!brevoRes.ok && brevoRes.status !== 400) {
+          const errText = await brevoRes.text();
+          console.error('Brevo subscribe failed:', brevoRes.status, errText);
+          return json({ error: 'subscribe failed' }, 502);
+        }
+        // Brevo returns 400 "duplicate_parameter" if the contact already exists — treat as success.
+        return json({ ok: true }, 200);
+      } catch (e) {
+        console.error('Newsletter subscribe failed:', e);
+        return json({ error: 'subscribe failed' }, 500);
+      }
+    }
+
     /* ── GET /api/orders — list all orders (admin only) ── */
     if (url.pathname === '/api/orders' && request.method === 'GET') {
       const key = request.headers.get('X-Admin-Key');
@@ -110,3 +150,5 @@ function addSecurityHeaders(response) {
   Object.entries(securityHeaders).forEach(([k, v]) => res.headers.set(k, v));
   return res;
 }
+
+

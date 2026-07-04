@@ -107,19 +107,26 @@ h1 span{color:var(--indigo);}
 </footer>
 
 <script>
-function handleSubmit(){
+async function handleSubmit(){
  const email=document.getElementById('emailInput').value.trim();
  const err=document.getElementById('formError');
- if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.classList.add('show');document.getElementById('emailInput').focus();return;}
+ const btn=document.querySelector('.form-btn');
+ if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='please enter a valid email address.';err.classList.add('show');document.getElementById('emailInput').focus();return;}
  err.classList.remove('show');
- // ── PASTE YOUR MAILCHIMP URL HERE ──────────────────────────────────────
- // fetch('https://YOUR-ACCOUNT.us1.list-manage.com/subscribe/post?u=XXXX&id=XXXX',{
- //  method:'POST',mode:'no-cors',
- //  headers:{'Content-Type':'application/x-www-form-urlencoded'},
- //  body:new URLSearchParams({EMAIL:email,'b_XXXX_XXXX':''})
- // });
- // ───────────────────────────────────────────────────────────────────────
- showSuccess();
+ if(btn){btn.disabled=true;btn.textContent='joining…';}
+ try{
+  const res=await fetch('/api/newsletter',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({email:email})
+  });
+  if(!res.ok) throw new Error('subscribe failed');
+  showSuccess();
+ }catch(e){
+  err.textContent='something went wrong — please try again.';
+  err.classList.add('show');
+  if(btn){btn.disabled=false;btn.textContent='join';}
+ }
 }
 function showSuccess(){document.getElementById('formWrap').style.display='none';document.getElementById('successMsg').style.display='block';}
 document.getElementById('emailInput').addEventListener('keydown',e=>{if(e.key==='Enter')handleSubmit();});
@@ -138,3 +145,5 @@ document.getElementById('emailInput').addEventListener('keydown',e=>{if(e.key===
   
 </body>
 </html>
+
+
