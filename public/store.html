@@ -1126,8 +1126,13 @@
     }
 
     .pdp-sizing-guide {
-      display: none;
+      display: inline-flex;
+      align-items: center;
+      align-self: flex-start;
+      background: none;
+      border: 0;
       font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+      font-family: var(--next-up);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--indigo);
@@ -1135,14 +1140,62 @@
       margin-bottom: 1.25rem;
       transition: opacity 0.2s;
       text-decoration: none;
+      cursor: pointer;
+      padding: 0;
     }
 
     .pdp-sizing-guide:hover {
       opacity: 1;
     }
 
-    .pdp-sizing-guide.show {
-      display: inline-block;
+    .size-guide-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 850;
+      background: rgba(10, 10, 10, 0.84);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 1.25rem;
+    }
+
+    .size-guide-overlay.open { opacity: 1; pointer-events: all; }
+
+    .size-guide-modal {
+      width: min(100%, 620px);
+      max-height: min(88vh, 680px);
+      overflow: auto;
+      background: var(--gray);
+      border: 1px solid rgba(242, 237, 228, 0.14);
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      position: relative;
+    }
+
+    .size-guide-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: 0;
+      color: var(--bone);
+      cursor: pointer;
+      font-size: 1.25rem;
+      opacity: 0.65;
+    }
+
+    .size-guide-title { font-family: var(--anton); font-size: clamp(1.5rem, 5vw, 2.25rem); letter-spacing: 0.05em; text-transform: uppercase; margin: 0 2rem 0.35rem 0; }
+    .size-guide-product, .size-guide-note { font-size: clamp(0.62rem, 1.6vw, 0.75rem); letter-spacing: 0.14em; line-height: 1.7; text-transform: uppercase; opacity: 0.5; }
+    .size-guide-note { margin: 1.5rem 0 1rem; text-transform: none; letter-spacing: 0.06em; }
+    .size-guide-table { width: 100%; border-collapse: collapse; font-size: clamp(0.65rem, 1.7vw, 0.78rem); letter-spacing: 0.1em; text-transform: uppercase; }
+    .size-guide-table th, .size-guide-table td { padding: 0.85rem 0.5rem; text-align: center; border-bottom: 1px solid rgba(242, 237, 228, 0.09); }
+    .size-guide-table th { opacity: 0.45; font-weight: normal; }
+    .size-guide-table th:first-child, .size-guide-table td:first-child { padding-left: 0; text-align: left; }
+
+    @media (max-width: 420px) {
+      .size-guide-table th, .size-guide-table td { padding: 0.72rem 0.25rem; letter-spacing: 0.04em; }
     }
 
     .pdp-add-btn {
@@ -1814,14 +1867,27 @@
           <div class="pdp-section-label">select size</div>
           <div class="pdp-sizes" id="pdpSizes"></div>
           <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
-          <a class="pdp-sizing-guide" id="pdpSizingGuide" href="./assets/sizing-guide.png" target="_blank"
-            rel="noopener">sizing guide →</a>
+          <button class="pdp-sizing-guide" id="pdpSizingGuide" type="button" onclick="openSizeGuide()">sizing guide →</button>
           <button class="pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">add to cart</button>
           <div class="pdp-sold-note" id="pdpSoldNote" style="display:none">this piece is sold out — no restock</div>
           <div class="pdp-details" id="pdpDetails"></div>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- SIZE GUIDE -->
+  <div class="size-guide-overlay" id="sizeGuideOverlay" onclick="closeSizeGuideOnOverlay(event)">
+    <section class="size-guide-modal" role="dialog" aria-modal="true" aria-labelledby="sizeGuideTitle">
+      <button class="size-guide-close" type="button" onclick="closeSizeGuide()" aria-label="close size guide">×</button>
+      <h2 class="size-guide-title" id="sizeGuideTitle">size guide</h2>
+      <div class="size-guide-product" id="sizeGuideProduct"></div>
+      <p class="size-guide-note" id="sizeGuideNote"></p>
+      <table class="size-guide-table">
+        <thead id="sizeGuideHead"></thead>
+        <tbody id="sizeGuideBody"></tbody>
+      </table>
+    </section>
   </div>
 
   <!-- CHECKOUT -->
@@ -1963,6 +2029,12 @@
 
   <script src="https://js.paystack.co/v1/inline.js"></script>
   <script>
+    const TEE_SIZE_GUIDE = {
+      note: 'Measurements are garment dimensions in centimetres, taken flat. Allow a 1–2 cm variance. This tee has an oversized fit; choose your usual size for the intended fit.',
+      columns: ['size', 'chest', 'length', 'sleeve'],
+      rows: [['XS', '55', '67', '20'], ['S', '57', '69', '21'], ['M', '59', '71', '22'], ['L', '61', '73', '23'], ['XL', '63', '75', '24']]
+    };
+
     const CONFIG = {
       paystackPublicKey: 'pk_live_fe7b26ed4147c9bf78ffdde8b449d6ce0d8b40f1',
       currency: 'GHS',
@@ -1973,6 +2045,7 @@
           images: ['./assets/products/anubis-black-front.jpg', './assets/products/anubis-black-back.jpg', './assets/products/anubis-black-body-front.png', './assets/products/anubis-black-body-back.png'],
           imageLabels: ['front', 'back', 'on body — front', 'on body — back'],
           description: 'Premium heavyweight tee with high-end print',
+          sizeGuide: TEE_SIZE_GUIDE,
           details: [{ label: 'material', value: '100% Cotton 320gsm' }, { label: 'fit', value: 'Oversized' }, { label: 'print', value: 'Screen-printed' }, { label: 'drop', value: 'Beyond .I — 2026' }, { label: 'care', value: 'Cold wash, hang dry' }],
           sizes: [{ size: 'XS', soldOut: true }, { size: 'S', soldOut: true }, { size: 'M' }, { size: 'L', soldOut: true }, { size: 'XL', soldOut: true }],
           colorVariants: [{ label: 'black', productId: 'anubis-black', active: true }, { label: 'white', productId: 'anubis-white' }]
@@ -1983,6 +2056,7 @@
           images: ['./assets/products/anubis-white-front.jpg', './assets/products/anubis-white-back.jpg', './assets/products/anubis-white-body-front.png', './assets/products/anubis-white-body-back.png'],
           imageLabels: ['front', 'back', 'on body — front', 'on body — back'],
           description: 'Premium heavyweight tee with high-end print',
+          sizeGuide: TEE_SIZE_GUIDE,
           details: [{ label: 'material', value: '100% Cotton 320gsm' }, { label: 'fit', value: 'Oversized' }, { label: 'print', value: 'Heat transferred' }, { label: 'drop', value: 'Beyond .I — 2026' }, { label: 'care', value: 'Cold wash, hang dry' }],
           sizes: [{ size: 'XS', soldOut: true }, { size: 'S', soldOut: true }, { size: 'M' }, { size: 'L', soldOut: true }, { size: 'XL', soldOut: true }],
           colorVariants: [{ label: 'black', productId: 'anubis-black' }, { label: 'white', productId: 'anubis-white', active: true }]
@@ -1993,6 +2067,7 @@
           images: ['./assets/products/space-front.jpg', './assets/products/space-back.jpg', './assets/products/space-body-front.png', './assets/products/space-body-back.png'],
           imageLabels: ['front', 'back', 'on body — front', 'on body — back'],
           description: 'Premium heavyweight tee with high-end print',
+          sizeGuide: TEE_SIZE_GUIDE,
           details: [{ label: 'material', value: '100% Cotton 320gsm' }, { label: 'fit', value: 'Oversized' }, { label: 'print', value: 'Screen-printed' }, { label: 'drop', value: 'Beyond .I — 2026' }, { label: 'care', value: 'Cold wash, hang dry' }],
           sizes: [{ size: 'XS', soldOut: true }, { size: 'S', soldOut: true }, { size: 'M' }, { size: 'L', soldOut: true }, { size: 'XL', soldOut: true }],
           colorVariants: []
@@ -2042,7 +2117,7 @@
         sizesWrap.appendChild(btn);
       });
       document.getElementById('pdpSizeError').classList.remove('show');
-      document.getElementById('pdpSizingGuide').classList.remove('show');
+      document.getElementById('pdpSizingGuide').style.display = p.sizeGuide ? '' : 'none';
       const addBtn = document.getElementById('pdpAddBtn'), soldNote = document.getElementById('pdpSoldNote');
       addBtn.textContent = 'add to cart'; addBtn.classList.remove('sold-out-state'); soldNote.style.display = 'none';
       const detailsWrap = document.getElementById('pdpDetails'); detailsWrap.innerHTML = '';
@@ -2064,6 +2139,20 @@
     }
     function closePdpOnOverlay(e) { if (e.target === document.getElementById('pdpOverlay')) closePdp(); }
 
+    function openSizeGuide() {
+      const p = CONFIG.products[pdpProductId];
+      if (!p || !p.sizeGuide) return;
+      const guide = p.sizeGuide;
+      document.getElementById('sizeGuideProduct').textContent = p.name + (p.variant ? ' — ' + p.variant : '');
+      document.getElementById('sizeGuideNote').textContent = guide.note || '';
+      document.getElementById('sizeGuideHead').innerHTML = '<tr>' + guide.columns.map(column => '<th scope="col">' + esc(column) + '</th>').join('') + '</tr>';
+      document.getElementById('sizeGuideBody').innerHTML = guide.rows.map(row => '<tr>' + row.map(value => '<td>' + esc(value) + '</td>').join('') + '</tr>').join('');
+      document.getElementById('sizeGuideOverlay').classList.add('open');
+    }
+
+    function closeSizeGuide() { document.getElementById('sizeGuideOverlay').classList.remove('open'); }
+    function closeSizeGuideOnOverlay(e) { if (e.target === document.getElementById('sizeGuideOverlay')) closeSizeGuide(); }
+
     function pdpGoTo(idx) {
       const p = CONFIG.products[pdpProductId]; if (!p) return;
       pdpImgIdx = idx;
@@ -2080,7 +2169,6 @@
       document.querySelectorAll('.pdp-size-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected'); pdpSelectedSize = size;
       document.getElementById('pdpSizeError').classList.remove('show');
-      document.getElementById('pdpSizingGuide').classList.add('show');
     }
     function pdpAddToCart() {
       if (!pdpSelectedSize) { document.getElementById('pdpSizeError').classList.add('show'); return; }
@@ -2332,7 +2420,7 @@
     }
 
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { closeMenu(); closePdp(); closeCheckout(); closeCart(); closeCatDrawer(); }
+      if (e.key === 'Escape') { closeMenu(); closeSizeGuide(); closePdp(); closeCheckout(); closeCart(); closeCatDrawer(); }
       if (e.key === 'ArrowLeft' && document.getElementById('pdpOverlay').classList.contains('open')) pdpNav(-1);
       if (e.key === 'ArrowRight' && document.getElementById('pdpOverlay').classList.contains('open')) pdpNav(1);
     });
