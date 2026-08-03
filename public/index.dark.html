@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>360SPRNG — Live Beyond Life</title>
+    <meta name="description"
+        content="360SPRNG — Ghanaian streetwear brand built for African creatives. Limited drops. Live Beyond Life.">
+    <meta name="keywords"
+        content="Ghanaian streetwear, African streetwear, limited drop clothing, African creative brand, Ghana fashion, 360SPRNG, BEYOND I collection, 360SPRNG clothing, 360SPRNG Ghana, Live Beyond Life">
+    <meta name="p:domain_verify" content="c8f0fea635599057b428c44ded3baf88" />
+    <meta property="og:title" content="360SPRNG — Live Beyond Life">
+    <meta property="og:description"
+        content="Ghanaian streetwear. Limited drops. Built for African creatives who choose themselves.">
+    <meta property="og:url" content="https://360sprng.com">
+    <meta property="og:type" content="website">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #0A0A0A;
+            --bone: #F2EDE4;
+            --indigo: #5C00FF;
+            --gold: #C9922A;
+            --gray: #141414;
+            --gray-mid: #1E1E1E;
+            --anton: 'Anton', sans-serif;
+            --next-up: 'Next Up Black', 'Anton', sans-serif;
+        }
+
+        @font-face {
+            font-family: 'Next Up Black';
+            src: url('./fonts/NextUpBlack.woff2') format('woff2'), url('./fonts/NextUpBlack.woff') format('woff');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--bone);
+            font-family: var(--next-up);
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ::selection {
+            background: var(--indigo);
+            color: var(--bone);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* ══════════════════════════════════════════════════════
+       NEWSLETTER BAR
+    ══════════════════════════════════════════════════════ */
+        .nl-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 350;
+            display: block;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(242, 237, 228, 0.07);
+            padding: 0.75rem 0;
+            background: var(--black);
+            text-decoration: none;
+        }
+
+        .nl-track {
+            display: flex;
+            animation: nl-scroll 22s linear infinite;
+            white-space: nowrap;
+            align-items: center;
+        }
+
+        .nl-bar:hover .nl-track {
+            animation-play-state: paused;
+        }
+
+        .nl-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-right: 20px;
+            flex-shrink: 0;
+        }
+
+        EOF

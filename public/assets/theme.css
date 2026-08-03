@@ -1,0 +1,184 @@
+:root {
+    --black: #0A0A0A;
+    --bone: #F2EDE4;
+    --indigo: #5C00FF;
+    --gold: #C9922A;
+    --gray: #141414;
+    --gray-mid: #1E1E1E;
+    --text-rgb: 242, 237, 228;
+    --bg-rgb: 10, 10, 10;
+    --muted: rgba(var(--text-rgb), 0.45);
+    --muted-strong: rgba(var(--text-rgb), 0.7);
+    --muted-light: rgba(var(--text-rgb), 0.22);
+    --border: rgba(var(--text-rgb), 0.08);
+    --surface: #1E1E1E;
+    --surface-alt: #141414;
+    --panel: #111111;
+    --panel-alt: #1B1B1B;
+    --danger: #ff4444;
+    --midnight: var(--black);
+    --raw-bone: var(--bone);
+    --dim: rgba(var(--text-rgb), 0.35);
+    --divider: rgba(var(--text-rgb), 0.1);
+}
+
+html.theme-light {
+    --black: #F7F5F0;
+    --bone: #141414;
+    --gray: #E7E2D9;
+    --gray-mid: #D8D1C8;
+    --text-rgb: 20, 20, 20;
+    --bg-rgb: 247, 245, 240;
+    --muted: rgba(var(--text-rgb), 0.45);
+    --muted-strong: rgba(var(--text-rgb), 0.7);
+    --muted-light: rgba(var(--text-rgb), 0.22);
+    --border: rgba(var(--text-rgb), 0.1);
+    --surface: #F1EDE7;
+    --surface-alt: #E7E1D7;
+    --panel: #e9e3dc;
+    --panel-alt: #ded6ca;
+    --danger: #b02a2a;
+    --midnight: var(--black);
+    --raw-bone: var(--bone);
+    --dim: rgba(var(--text-rgb), 0.35);
+    --divider: rgba(var(--text-rgb), 0.1);
+}
+
+html,
+body {
+    min-height: 100%;
+}
+
+body {
+    background: var(--black);
+    color: var(--bone);
+}
+
+::selection {
+    background: var(--indigo);
+    color: var(--bone);
+}
+
+.theme-toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--border);
+    background: rgba(var(--text-rgb), 0.08);
+    color: var(--bone);
+    font-family: var(--anton, 'Anton'), sans-serif;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+    background: rgba(var(--text-rgb), 0.14);
+    outline: none;
+}
+
+html.theme-light .theme-toggle {
+    color: var(--bone);
+    background: rgba(var(--text-rgb), 0.08);
+    border-color: var(--border);
+}
+
+.theme-toggle::before {
+    content: '☾';
+    display: inline-block;
+    margin-right: 0.65rem;
+}
+
+html.theme-light .theme-toggle::before {
+    content: '☀';
+}
+
+.theme-toggle.hide {
+    display: none;
+}
+
+/*
+ * Readability baseline
+ * The site is intentionally dark, so the default copy needs to remain pure
+ * white and comfortably readable at every viewport size. Page-specific display
+ * type is left alone; these rules raise the text people need to read and use.
+ */
+html:not(.theme-light) {
+    --bone: #FFFFFF;
+    --raw-bone: #FFFFFF;
+    --text-rgb: 255, 255, 255;
+    --muted: rgba(255, 255, 255, 0.68);
+    --muted-strong: rgba(255, 255, 255, 0.82);
+    --muted-light: rgba(255, 255, 255, 0.42);
+    --dim: rgba(255, 255, 255, 0.64);
+    --divider: rgba(255, 255, 255, 0.16);
+    --border: rgba(255, 255, 255, 0.16);
+}
+
+body {
+    font-size: clamp(1rem, 0.35vw + 0.92rem, 1.125rem);
+    line-height: 1.6;
+}
+
+/* Form controls must not inherit the tiny display-label sizes used elsewhere. */
+button,
+input,
+select,
+textarea {
+    font-size: clamp(0.9rem, 0.25vw + 0.85rem, 1rem) !important;
+}
+
+p,
+li,
+td,
+th,
+label,
+figcaption {
+    font-size: 1rem !important;
+}
+
+input,
+select,
+textarea {
+    min-height: 2.75rem;
+}
+
+.theme-toggle {
+    font-size: clamp(0.78rem, 0.2vw + 0.74rem, 0.9rem);
+    min-height: 2.75rem;
+    padding: 0.75rem 1rem;
+}
+
+/* These primary actions previously used midnight text. Keep the text white
+   while using the brand colour so the controls retain sufficient contrast. */
+.form-btn,
+.pdp-add-btn {
+    background: var(--indigo);
+    color: #FFFFFF;
+}
+
+@media (max-width: 600px) {
+    body {
+        font-size: 1rem;
+        line-height: 1.65;
+    }
+
+    p,
+    li,
+    td,
+    th,
+    label,
+    figcaption {
+        font-size: 1rem !important;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+        font-size: 1rem !important;
+    }
+}
