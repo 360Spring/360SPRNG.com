@@ -2362,6 +2362,11 @@
       const amount = cartTotal() * 100,
         orderDetails = cart.map(i => `${i.name}(${i.size})x${i.qty}`).join(','),
         shippingAddr = [addr1, addr2, city, region, postal, country].filter(Boolean).join(', ');
+      if (!window.PaystackPop) {
+        err.textContent = 'payment gateway is unavailable right now. please refresh and try again.';
+        err.classList.add('show');
+        return;
+      }
       PaystackPop.setup({
         key: CONFIG.paystackPublicKey, email, amount, currency: CONFIG.currency,
         channels: ['mobile_money', 'card'],
@@ -2376,25 +2381,23 @@
           ]
         },
         label: '360SPRNG', onClose: function () { },
-        callback: async function (response) {
+        callback: function (response) {
           var ref = response.reference;
           var total = cartTotal();
-          try {
-            await fetch('/api/orders', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                ref: ref, email: email, name: name, phone: phone,
-                country: country,
-                address: [addr1, addr2].filter(Boolean).join(', '),
-                city: city, region: region, postal: postal,
-                digital_address: digital || '',
-                notes: notes || '',
-                items: cart.map(function (i) { return i.name + '(' + i.size + ')x' + i.qty; }).join(','),
-                total: total
-              })
-            });
-          } catch (e) { /* silent — payment already succeeded */ }
+          fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              ref: ref, email: email, name: name, phone: phone,
+              country: country,
+              address: [addr1, addr2].filter(Boolean).join(', '),
+              city: city, region: region, postal: postal,
+              digital_address: digital || '',
+              notes: notes || '',
+              items: cart.map(function (i) { return i.name + '(' + i.size + ')x' + i.qty; }).join(','),
+              total: total
+            })
+          }).catch(function () { /* silent — payment already succeeded */ });
           try {
             const orders = JSON.parse(localStorage.getItem('360_orders') || '[]');
             orders.unshift({
