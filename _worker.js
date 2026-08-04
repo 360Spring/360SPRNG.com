@@ -1,13 +1,17 @@
-const ALLOWED_ORIGIN = 'https://360sprng.com';
+const ALLOWED_ORIGINS = ['https://360sprng.com', 'https://www.360sprng.com'];
 
 /* ── Kill switch — flip to false to redirect all traffic to coming-soon ── */
 const SITE_LIVE = true;
 
 const cors = {
-  'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Key',
 };
+
+function getCorsOrigin(request) {
+  const origin = request.headers.get('Origin');
+  return ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+}
 
 /* ── Security headers added to every response ── */
 const securityHeaders = {
@@ -18,12 +22,12 @@ const securityHeaders = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://js.paystack.co https://omnisnippet1.com",
-    "connect-src 'self' https://api.paystack.co https://api.brevo.com https://omnisnippet1.com https://tracking.omnisend.com",
+    "script-src 'self' 'unsafe-inline' https://js.paystack.co https://paystack.com https://omnisnippet1.com",
+    "connect-src 'self' https://api.paystack.co https://checkout.paystack.com https://paystack.com https://api.brevo.com https://omnisnippet1.com https://tracking.omnisend.com",
     "img-src 'self' data: blob: https://omnisnippet1.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://paystack.com",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "frame-src https://js.paystack.co",
+    "frame-src https://js.paystack.co https://checkout.paystack.com https://paystack.com",
   ].join('; '),
 };
 
@@ -33,7 +37,10 @@ export default {
 
     /* ── CORS preflight ── */
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: { ...cors, ...securityHeaders } });
+      return new Response(null, {
+        status: 204,
+        headers: { ...cors, ...securityHeaders, 'Access-Control-Allow-Origin': getCorsOrigin(request) },
+      });
     }
 
     /* ── Kill switch — server-side enforcement ── */
@@ -47,7 +54,7 @@ export default {
         const b = await request.json();
 
         if (!b.ref || !b.email || !b.items || !b.total) {
-          return json({ error: 'missing required fields' }, 400);
+          return json({ error: 'missing required fields' }, 400, request);
         }
 
         await env.DB.prepare(`
@@ -72,10 +79,10 @@ export default {
           Number(b.total)
         ).run();
 
-        return json({ ok: true }, 200);
+        return json({ ok: true }, 200, request);
       } catch (e) {
         console.error('Order insert failed:', e);
-        return json({ error: 'order submission failed' }, 500);
+        return json({ error: 'order submission failed' }, 500, request);
       }
     }
 
@@ -85,10 +92,10 @@ export default {
         const b = await request.json();
         const email = (b.email || '').trim();
         const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        if (!emailOk) return json({ error: 'invalid email' }, 400);
+        if (!emailOk) return json({ error: 'invalid email' }, 400, request);
         if (!env.BREVO_API_KEY) {
           console.error('BREVO_API_KEY is not configured');
-          return json({ error: 'newsletter signup is temporarily unavailable' }, 500);
+          return json({ error: 'newsletter signup is temporarily unavailable' }, 500, request);
         }
 
         const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
@@ -109,13 +116,13 @@ export default {
         if (!brevoRes.ok && brevoRes.status !== 400) {
           const errText = await brevoRes.text();
           console.error('Brevo subscribe failed:', brevoRes.status, errText);
-          return json({ error: 'subscribe failed' }, 502);
+          return json({ error: 'subscribe failed' }, 502, request);
         }
         // Brevo returns 400 "duplicate_parameter" if the contact already exists — treat as success.
-        return json({ ok: true }, 200);
+        return json({ ok: true }, 200, request);
       } catch (e) {
         console.error('Newsletter subscribe failed:', e);
-        return json({ error: 'subscribe failed' }, 500);
+        return json({ error: 'subscribe failed' }, 500, request);
       }
     }
 
@@ -123,12 +130,12 @@ export default {
     if (url.pathname === '/api/orders' && request.method === 'GET') {
       const key = request.headers.get('X-Admin-Key');
       if (!env.ADMIN_SECRET || key !== env.ADMIN_SECRET) {
-        return json({ error: 'unauthorized' }, 401);
+        return json({ error: 'unauthorized' }, 401, request);
       }
       const { results } = await env.DB
         .prepare('SELECT * FROM orders ORDER BY created_at DESC')
         .all();
-      return json(results, 200);
+      return json(results, 200, request);
     }
 
     /* ── everything else → static assets ── */
@@ -137,10 +144,15 @@ export default {
   }
 };
 
-function json(data, status) {
+function json(data, status, request) {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { ...cors, ...securityHeaders, 'Content-Type': 'application/json' },
+    headers: {
+      ...cors,
+      ...securityHeaders,
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': request ? getCorsOrigin(request) : ALLOWED_ORIGINS[0],
+    },
   });
 }
 
