@@ -1587,6 +1587,11 @@
       opacity: 0.85;
     }
 
+    .pay-btn:disabled {
+      cursor: wait;
+      opacity: 0.6;
+    }
+
     /* ══════════════════════════════════════════════════════
        FOOTER
     ══════════════════════════════════════════════════════ */
@@ -2078,7 +2083,7 @@
     <span class="footer-copy">© 2026 360SPRNG</span>
   </footer>
 
-  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <script src="https://js.paystack.co/v2/inline.js"></script>
   <script>
     const TEE_SIZE_GUIDE = {
       note: 'Measurements are garment dimensions in centimetres, taken flat. Allow a 1–2 cm variance. This tee has an oversized fit; choose your usual size for the intended fit.',
@@ -2372,6 +2377,31 @@
     }
     function closeCheckout() { document.getElementById('checkoutOverlay').classList.remove('open'); document.body.style.overflow = ''; }
     function closeCheckoutOnOverlay(e) { if (e.target === document.getElementById('checkoutOverlay')) closeCheckout(); }
+    function setPaymentButtonState(isBusy) {
+      const button = document.querySelector('.pay-btn');
+      if (!button) return;
+      button.disabled = isBusy;
+      button.textContent = isBusy ? 'opening secure payment…' : 'pay securely via paystack';
+    }
+    function showCheckoutError(message) {
+      const err = document.getElementById('checkout-error');
+      err.textContent = message;
+      err.classList.add('show');
+    }
+    async function saveVerifiedOrder(payload) {
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 15000);
+      try {
+        return await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+      } finally {
+        window.clearTimeout(timeout);
+      }
+    }
     function initiateCheckout() {
       const name = document.getElementById('co-name').value.trim(),
         email = document.getElementById('co-email').value.trim(),
@@ -2385,15 +2415,19 @@
         digital = (document.getElementById('co-digital') || {}).value || '',
         notes = document.getElementById('co-notes').value.trim(),
         err = document.getElementById('checkout-error');
-      if (!name || !email || !addr1 || !city || !region) { err.classList.add('show'); return; }
+      if (!name || !email || !addr1 || !city || !region) { showCheckoutError('please fill in your name, email, and shipping address.'); return; }
       err.classList.remove('show');
+      if (!window.PaystackPop) { showCheckoutError('secure payment could not load. Please refresh and try again.'); return; }
       if (document.getElementById('saveProfile').checked) {
         localStorage.setItem('360_profile', JSON.stringify({ name, email, phone, country, addr1, addr2, city, region, postal, digital, notes }));
       }
-      const amount = cartTotal() * 100,
+      const amount = Math.round(cartTotal() * 100),
         orderDetails = cart.map(i => `${i.name}(${i.size})x${i.qty}`).join(','),
         shippingAddr = [addr1, addr2, city, region, postal, country].filter(Boolean).join(', ');
-      PaystackPop.setup({
+      setPaymentButtonState(true);
+      try {
+        const popup = new PaystackPop();
+        popup.newTransaction({
         key: CONFIG.paystackPublicKey, email, amount, currency: CONFIG.currency,
         channels: ['mobile_money', 'card'],
         metadata: {
@@ -2406,16 +2440,18 @@
             { display_name: 'Notes', variable_name: 'notes', value: notes || '—' }
           ]
         },
-        label: '360SPRNG', onClose: function () { },
-        callback: async function (response) {
+        label: '360SPRNG',
+        onCancel: function () { setPaymentButtonState(false); },
+        onError: function () {
+          setPaymentButtonState(false);
+          showCheckoutError('secure payment could not start. Please try again.');
+        },
+        onSuccess: async function (response) {
           var ref = response.reference;
           var total = cartTotal();
           var orderSaved = false;
           try {
-            var res = await fetch('/api/orders', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
+            var res = await saveVerifiedOrder({
                 ref: ref, email: email, name: name, phone: phone,
                 country: country,
                 address: [addr1, addr2].filter(Boolean).join(', '),
@@ -2424,7 +2460,6 @@
                 notes: notes || '',
                 items: cart.map(function (i) { return i.name + '(' + i.size + ')x' + i.qty; }).join(','),
                 total: total
-              })
             });
             var data = null;
             try { data = await res.json(); } catch (e) { /* non-JSON response */ }
@@ -2440,14 +2475,19 @@
             localStorage.setItem('360_orders', JSON.stringify(orders.slice(0, 50)));
           } catch (e) { /* non-critical — order still recorded server-side */ }
           cart = []; saveCart(); renderCart();
+          setPaymentButtonState(false);
           closeCheckout();
           if (orderSaved) {
             showSuccess(name, ref, total);
           } else {
             showOrderIssue(name, ref, total);
           }
-        },
-      }).openIframe();
+        }
+        });
+      } catch (error) {
+        setPaymentButtonState(false);
+        showCheckoutError('secure payment could not start. Please try again.');
+      }
     }
     function showSuccess(name, ref, total) {
       const m = document.createElement('div');
