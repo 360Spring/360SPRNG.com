@@ -22,28 +22,6 @@
     --divider: rgba(var(--text-rgb), 0.1);
 }
 
-html.theme-light {
-    --black: #F7F5F0;
-    --bone: #141414;
-    --gray: #E7E2D9;
-    --gray-mid: #D8D1C8;
-    --text-rgb: 20, 20, 20;
-    --bg-rgb: 247, 245, 240;
-    --muted: rgba(var(--text-rgb), 0.45);
-    --muted-strong: rgba(var(--text-rgb), 0.7);
-    --muted-light: rgba(var(--text-rgb), 0.22);
-    --border: rgba(var(--text-rgb), 0.1);
-    --surface: #F1EDE7;
-    --surface-alt: #E7E1D7;
-    --panel: #e9e3dc;
-    --panel-alt: #ded6ca;
-    --danger: #b02a2a;
-    --midnight: var(--black);
-    --raw-bone: var(--bone);
-    --dim: rgba(var(--text-rgb), 0.35);
-    --divider: rgba(var(--text-rgb), 0.1);
-}
-
 html,
 body {
     min-height: 100%;
@@ -106,7 +84,7 @@ html.theme-light .theme-toggle::before {
  * white and comfortably readable at every viewport size. Page-specific display
  * type is left alone; these rules raise the text people need to read and use.
  */
-html:not(.theme-light) {
+:root {
     --bone: #FFFFFF;
     --raw-bone: #FFFFFF;
     --text-rgb: 255, 255, 255;
@@ -256,4 +234,47 @@ textarea {
     textarea {
         font-size: 1rem !important;
     }
+}
+
+/* Theme control lives in the drawer footer and presents as a clear switch. */
+.menu-drawer .theme-toggle {
+    width: 100%;
+    min-height: 3rem;
+    margin: 0 0 1rem;
+    padding: 0.65rem 0.75rem 0.65rem 1rem;
+    border: 1px solid var(--border);
+    background: rgba(var(--text-rgb), 0.05);
+    color: var(--bone);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--anton, 'Anton'), sans-serif;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.menu-drawer .theme-toggle::before {
+    content: 'dark mode';
+    display: block;
+    margin: 0;
+}
+
+.menu-drawer .theme-toggle::after {
+    content: '';
+    width: 2.6rem;
+    height: 1.45rem;
+    border: 1px solid rgba(var(--text-rgb), 0.22);
+    border-radius: 999px;
+    background: radial-gradient(circle at 0.72rem 50%, var(--bone) 0.38rem, transparent 0.4rem), rgba(var(--text-rgb), 0.15);
+    transition: background 0.22s ease;
+}
+
+html.theme-light .menu-drawer .theme-toggle::before {
+    content: 'light mode';
+}
+
+html.theme-light .menu-drawer .theme-toggle::after {
+    background: radial-gradient(circle at calc(100% - 0.72rem) 50%, var(--bone) 0.38rem, transparent 0.4rem), var(--indigo);
 }
