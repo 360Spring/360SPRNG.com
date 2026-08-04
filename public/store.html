@@ -2336,7 +2336,25 @@
         digital = (document.getElementById('co-digital') || {}).value || '',
         notes = document.getElementById('co-notes').value.trim(),
         err = document.getElementById('checkout-error');
-      if (!name || !email || !addr1 || !city || !region) { err.classList.add('show'); return; }
+      const missing = [];
+      if (!name) missing.push('full name');
+      if (!email) missing.push('email');
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) missing.push('a valid email');
+      if (!addr1) missing.push('address line 1');
+      if (!city) missing.push('city');
+      if (!region) missing.push(country === 'GH' ? 'region' : 'state / region');
+      if (missing.length) {
+        err.textContent = `please fill in: ${missing.join(', ')}.`;
+        err.classList.add('show');
+        const focusField = !name ? document.getElementById('co-name')
+          : !email ? document.getElementById('co-email')
+            : !addr1 ? document.getElementById('co-addr1')
+              : !city ? document.getElementById('co-city')
+                : country === 'GH' ? document.getElementById('co-region-gh') : document.getElementById('co-region-other');
+        if (focusField) focusField.focus();
+        return;
+      }
+      err.textContent = 'please fill in your name, email, and shipping address.';
       err.classList.remove('show');
       if (document.getElementById('saveProfile').checked) {
         localStorage.setItem('360_profile', JSON.stringify({ name, email, phone, country, addr1, addr2, city, region, postal, digital, notes }));
