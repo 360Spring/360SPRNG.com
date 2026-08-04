@@ -1162,7 +1162,10 @@
       padding: 1.25rem;
     }
 
-    .size-guide-overlay.open { opacity: 1; pointer-events: all; }
+    .size-guide-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
 
     .size-guide-modal {
       width: min(100%, 620px);
@@ -1186,16 +1189,62 @@
       opacity: 0.65;
     }
 
-    .size-guide-title { font-family: var(--anton); font-size: clamp(1.5rem, 5vw, 2.25rem); letter-spacing: 0.05em; text-transform: uppercase; margin: 0 2rem 0.35rem 0; }
-    .size-guide-product, .size-guide-note { font-size: clamp(0.62rem, 1.6vw, 0.75rem); letter-spacing: 0.14em; line-height: 1.7; text-transform: uppercase; opacity: 0.5; }
-    .size-guide-note { margin: 1.5rem 0 1rem; text-transform: none; letter-spacing: 0.06em; }
-    .size-guide-table { width: 100%; border-collapse: collapse; font-size: clamp(0.65rem, 1.7vw, 0.78rem); letter-spacing: 0.1em; text-transform: uppercase; }
-    .size-guide-table th, .size-guide-table td { padding: 0.85rem 0.5rem; text-align: center; border-bottom: 1px solid rgba(242, 237, 228, 0.09); }
-    .size-guide-table th { opacity: 0.45; font-weight: normal; }
-    .size-guide-table th:first-child, .size-guide-table td:first-child { padding-left: 0; text-align: left; }
+    .size-guide-title {
+      font-family: var(--anton);
+      font-size: clamp(1.5rem, 5vw, 2.25rem);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin: 0 2rem 0.35rem 0;
+    }
+
+    .size-guide-product,
+    .size-guide-note {
+      font-size: clamp(0.62rem, 1.6vw, 0.75rem);
+      letter-spacing: 0.14em;
+      line-height: 1.7;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    .size-guide-note {
+      margin: 1.5rem 0 1rem;
+      text-transform: none;
+      letter-spacing: 0.06em;
+    }
+
+    .size-guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: clamp(0.65rem, 1.7vw, 0.78rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .size-guide-table th,
+    .size-guide-table td {
+      padding: 0.85rem 0.5rem;
+      text-align: center;
+      border-bottom: 1px solid rgba(242, 237, 228, 0.09);
+    }
+
+    .size-guide-table th {
+      opacity: 0.45;
+      font-weight: normal;
+    }
+
+    .size-guide-table th:first-child,
+    .size-guide-table td:first-child {
+      padding-left: 0;
+      text-align: left;
+    }
 
     @media (max-width: 420px) {
-      .size-guide-table th, .size-guide-table td { padding: 0.72rem 0.25rem; letter-spacing: 0.04em; }
+
+      .size-guide-table th,
+      .size-guide-table td {
+        padding: 0.72rem 0.25rem;
+        letter-spacing: 0.04em;
+      }
     }
 
     .pdp-add-btn {
@@ -1704,7 +1753,6 @@
         </div>
       </a>
     </nav>
-    <div class="drawer-footer"><span class="drawer-copy">© 2026 360SPRNG</span></div>
   </aside>
 
   <!-- CART DRAWER -->
@@ -1869,7 +1917,8 @@
           <div class="pdp-section-label">select size</div>
           <div class="pdp-sizes" id="pdpSizes"></div>
           <div class="pdp-size-error" id="pdpSizeError">please select a size</div>
-          <button class="pdp-sizing-guide" id="pdpSizingGuide" type="button" onclick="openSizeGuide()">sizing guide →</button>
+          <button class="pdp-sizing-guide" id="pdpSizingGuide" type="button" onclick="openSizeGuide()">sizing guide
+            →</button>
           <button class="pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">add to cart</button>
           <div class="pdp-sold-note" id="pdpSoldNote" style="display:none">this piece is sold out — no restock</div>
           <div class="pdp-details" id="pdpDetails"></div>
@@ -2361,8 +2410,9 @@
         callback: async function (response) {
           var ref = response.reference;
           var total = cartTotal();
+          var orderSaved = false;
           try {
-            await fetch('/api/orders', {
+            var res = await fetch('/api/orders', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -2376,7 +2426,10 @@
                 total: total
               })
             });
-          } catch (e) { /* silent — payment already succeeded */ }
+            var data = null;
+            try { data = await res.json(); } catch (e) { /* non-JSON response */ }
+            orderSaved = res.ok && data && data.ok === true;
+          } catch (e) { /* network error — payment already succeeded, order not confirmed server-side */ }
           try {
             const orders = JSON.parse(localStorage.getItem('360_orders') || '[]');
             orders.unshift({
@@ -2388,7 +2441,11 @@
           } catch (e) { /* non-critical — order still recorded server-side */ }
           cart = []; saveCart(); renderCart();
           closeCheckout();
-          showSuccess(name, ref, total);
+          if (orderSaved) {
+            showSuccess(name, ref, total);
+          } else {
+            showOrderIssue(name, ref, total);
+          }
         },
       }).openIframe();
     }
@@ -2399,6 +2456,19 @@
         <div style="font-family:var(--anton);font-size:clamp(1.2rem,3vw,1.6rem);letter-spacing:0.08em;text-transform:uppercase;">order confirmed</div>
         <div style="font-size:clamp(0.72rem,1.8vw,0.88rem);letter-spacing:0.18em;text-transform:uppercase;opacity:0.4;line-height:2">${esc(name)}<br>ref: ${esc(ref)}<br>total: GH₵ ${total}</div>
         <div style="font-size:clamp(0.68rem,1.5vw,0.78rem);opacity:0.3;margin-top:0.5rem;line-height:1.9;letter-spacing:0.1em;text-transform:uppercase">confirmation email on its way.<br>we'll reach out on instagram with dispatch info.</div>
+        <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;justify-content:center;">
+          <button onclick="this.closest('div[style]').remove()" style="background:none;border:1px solid rgba(242,237,228,0.15);color:var(--bone);font-family:var(--next-up);font-size:clamp(0.68rem,1.5vw,0.78rem);letter-spacing:0.2em;text-transform:uppercase;padding:0.9rem 2rem;cursor:pointer;">continue</button>
+          <button onclick="window.location.href='profile.html'" style="background:var(--indigo);border:none;color:var(--bone);font-family:var(--next-up);font-size:clamp(0.68rem,1.5vw,0.78rem);letter-spacing:0.2em;text-transform:uppercase;padding:0.9rem 2rem;cursor:pointer;">view order</button>
+        </div>`;
+      document.body.appendChild(m);
+    }
+    function showOrderIssue(name, ref, total) {
+      const m = document.createElement('div');
+      m.style.cssText = 'position:fixed;inset:0;background:rgba(10,10,10,0.97);z-index:900;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;padding:2rem;text-align:center;';
+      m.innerHTML = `<div style="font-family:var(--anton);font-size:3rem;color:var(--indigo);">✓</div>
+        <div style="font-family:var(--anton);font-size:clamp(1.2rem,3vw,1.6rem);letter-spacing:0.08em;text-transform:uppercase;">payment received</div>
+        <div style="font-size:clamp(0.72rem,1.8vw,0.88rem);letter-spacing:0.18em;text-transform:uppercase;opacity:0.4;line-height:2">${esc(name)}<br>ref: ${esc(ref)}<br>total: GH₵ ${total}</div>
+        <div style="font-size:clamp(0.68rem,1.5vw,0.78rem);opacity:0.5;margin-top:0.5rem;line-height:1.9;letter-spacing:0.1em;text-transform:uppercase;max-width:26rem;">we're finalizing your order — if you don't hear from us on instagram within 24 hours, message us with the reference above so we can confirm it manually.</div>
         <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;justify-content:center;">
           <button onclick="this.closest('div[style]').remove()" style="background:none;border:1px solid rgba(242,237,228,0.15);color:var(--bone);font-family:var(--next-up);font-size:clamp(0.68rem,1.5vw,0.78rem);letter-spacing:0.2em;text-transform:uppercase;padding:0.9rem 2rem;cursor:pointer;">continue</button>
           <button onclick="window.location.href='profile.html'" style="background:var(--indigo);border:none;color:var(--bone);font-family:var(--next-up);font-size:clamp(0.68rem,1.5vw,0.78rem);letter-spacing:0.2em;text-transform:uppercase;padding:0.9rem 2rem;cursor:pointer;">view order</button>
@@ -2440,7 +2510,7 @@
     omnisend.push(["track", "$pageViewed"]);
     !function () { var e = document.createElement("script"); e.type = "text/javascript", e.async = !0, e.src = "https://omnisnippet1.com/inshop/launcher-v2.js"; var t = document.getElementsByTagName("script")[0]; t.parentNode.insertBefore(e, t) }();
   </script>
+  <script src="./assets/theme.js"></script>
 </body>
 
 </html>
-

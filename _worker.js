@@ -41,7 +41,7 @@ export default {
       return Response.redirect('https://360sprng.com/coming-soon.html', 302);
     }
 
-    /* ── POST /api/orders — write confirmed order to D1 ── */
+    /* ── POST /api/orders — verify payment with Paystack, then write to D1 ── */
     if (url.pathname === '/api/orders' && request.method === 'POST') {
       try {
         const b = await request.json();
@@ -50,26 +50,70 @@ export default {
           return json({ error: 'missing required fields' }, 400);
         }
 
+        const email = String(b.email).trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          return json({ error: 'invalid email' }, 400);
+        }
+
+        const total = Number(b.total);
+        if (!Number.isFinite(total) || total <= 0) {
+          return json({ error: 'invalid total' }, 400);
+        }
+
+        const ref = String(b.ref).slice(0, 200);
+        const cap = (s, max = 500) => String(s || '').slice(0, max);
+
+        /* ── Server-side proof of payment — never trust a client-reported total ── */
+        if (!env.PAYSTACK_SECRET_KEY) {
+          console.error('PAYSTACK_SECRET_KEY is not configured');
+          return json({ error: 'order verification unavailable' }, 500);
+        }
+
+        const verifyRes = await fetch(
+          `https://api.paystack.co/transaction/verify/${encodeURIComponent(ref)}`,
+          { headers: { Authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}` } }
+        );
+
+        if (!verifyRes.ok) {
+          console.error('Paystack verify request failed:', verifyRes.status);
+          return json({ error: 'payment could not be verified' }, 402);
+        }
+
+        const verifyData = await verifyRes.json();
+        const tx = verifyData && verifyData.data;
+        const expectedPesewas = Math.round(total * 100);
+        const paymentOk =
+          verifyData.status === true &&
+          tx &&
+          tx.status === 'success' &&
+          tx.currency === 'GHS' &&
+          Math.abs(tx.amount - expectedPesewas) <= 1; // 1-pesewa rounding slack
+
+        if (!paymentOk) {
+          console.error('Paystack verify mismatch:', { ref, txStatus: tx && tx.status, txAmount: tx && tx.amount, expectedPesewas });
+          return json({ error: 'payment could not be verified' }, 402);
+        }
+
         await env.DB.prepare(`
           INSERT OR IGNORE INTO orders
             (ref, created_at, name, email, phone, country, address,
              city, region, postal, digital_address, notes, items, total)
           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `).bind(
-          b.ref,
+          ref,
           new Date().toISOString(),
-          b.name          || '',
-          b.email,
-          b.phone         || '',
-          b.country       || '',
-          b.address       || '',
-          b.city          || '',
-          b.region        || '',
-          b.postal        || '',
-          b.digital_address || '',
-          b.notes         || '',
-          typeof b.items === 'string' ? b.items : JSON.stringify(b.items),
-          Number(b.total)
+          cap(b.name),
+          email,
+          cap(b.phone, 40),
+          cap(b.country, 100),
+          cap(b.address),
+          cap(b.city, 100),
+          cap(b.region, 100),
+          cap(b.postal, 40),
+          cap(b.digital_address, 100),
+          cap(b.notes, 2000),
+          cap(typeof b.items === 'string' ? b.items : JSON.stringify(b.items), 4000),
+          total
         ).run();
 
         return json({ ok: true }, 200);
@@ -121,8 +165,8 @@ export default {
 
     /* ── GET /api/orders — list all orders (admin only) ── */
     if (url.pathname === '/api/orders' && request.method === 'GET') {
-      const key = request.headers.get('X-Admin-Key');
-      if (!env.ADMIN_SECRET || key !== env.ADMIN_SECRET) {
+      const key = request.headers.get('X-Admin-Key') || '';
+      if (!env.ADMIN_SECRET || !timingSafeStringEqual(key, env.ADMIN_SECRET)) {
         return json({ error: 'unauthorized' }, 401);
       }
       const { results } = await env.DB
@@ -144,11 +188,22 @@ function json(data, status) {
   });
 }
 
+/* ── Constant-time string compare (Workers-native timingSafeEqual) ── */
+function timingSafeStringEqual(a, b) {
+  const enc = new TextEncoder();
+  const bufA = enc.encode(a);
+  const bufB = enc.encode(b);
+  if (bufA.length !== bufB.length) {
+    // Still run a compare of equal length to avoid an obvious early return.
+    crypto.subtle.timingSafeEqual(bufA, bufA);
+    return false;
+  }
+  return crypto.subtle.timingSafeEqual(bufA, bufB);
+}
+
 /* ── Attach security headers to any Response without mutating the original ── */
 function addSecurityHeaders(response) {
   const res = new Response(response.body, response);
   Object.entries(securityHeaders).forEach(([k, v]) => res.headers.set(k, v));
   return res;
 }
-
-
