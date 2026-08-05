@@ -19,11 +19,11 @@ const securityHeaders = {
   'Content-Security-Policy': [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' https://js.paystack.co https://omnisnippet1.com",
-    "connect-src 'self' https://*.paystack.com https://api.brevo.com https://omnisnippet1.com https://tracking.omnisend.com",
+    "connect-src 'self' https://api.paystack.co https://api.brevo.com https://omnisnippet1.com https://tracking.omnisend.com",
     "img-src 'self' data: blob: https://omnisnippet1.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "frame-src https://*.paystack.com",
+    "frame-src https://js.paystack.co https://checkout.paystack.com",
   ].join('; '),
 };
 
