@@ -1,7 +1,7 @@
 const ALLOWED_ORIGIN = 'https://360sprng.com';
 
 /* ── Kill switch — flip to false to redirect all traffic to coming-soon ── */
-const SITE_LIVE = true;
+const SITE_LIVE = false;
 
 const cors = {
   'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
