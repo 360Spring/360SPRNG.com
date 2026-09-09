@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>360SPRNG — Shop</title>
+<meta name="description" content="Shop BEYOND .I. Limited run, no restock.">
+<link rel="canonical" href="https://360sprng.com/store">
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">skip to content</a>
+
+<header class="site-header">
+  <button class="icon-btn" id="navBtn" aria-label="Open menu" aria-expanded="false" onclick="toggleNav()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <a class="brand-lockup" href="./index.html"><img src="./assets/press/black_logo.png" alt="360SPRNG"></a>
+  <div class="header-right">
+    <button class="icon-btn cart-count" id="cartOpenBtn" aria-label="Open cart" onclick="openCart()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="nav-scrim" id="navScrim" onclick="closeNav()"></div>
+<nav class="nav-dropdown" id="navDropdown" aria-label="Site navigation">
+  <a href="./index.html">home</a>
+  <a href="./store.html" class="current">shop<span class="dot"></span></a>
+  <a href="./lookbook.html">lookbook</a>
+  <a href="./archive.html">archive</a>
+  <a href="./manifesto.html">manifesto</a>
+  <a href="./community.html">frat</a>
+</nav>
+
+<main id="main">
+  <p class="store-heading">beyond .i — available now</p>
+
+  <button class="cat-trigger" id="catTrigger" onclick="toggleCatDropdown()" aria-haspopup="true" aria-expanded="false">
+    <span id="catTriggerLabel">category: all</span>
+  </button>
+  <div class="cat-scrim" id="catScrim" onclick="closeCatDropdown()"></div>
+  <div class="cat-dropdown" id="catDropdown" role="menu" aria-label="Filter by category">
+    <button class="active" data-cat="all" onclick="filterStore('all',this)">all<span class="dot"></span></button>
+    <button data-cat="tees" onclick="filterStore('tees',this)">tees</button>
+    <button data-cat="hoodies" data-soon onclick="filterStore('hoodies',this)">hoodies</button>
+    <button data-cat="shorts" data-soon onclick="filterStore('shorts',this)">shorts</button>
+    <button data-cat="joggers" data-soon onclick="filterStore('joggers',this)">joggers</button>
+    <button data-cat="jackets" data-soon onclick="filterStore('jackets',this)">jackets</button>
+    <button data-cat="bombers" data-soon onclick="filterStore('bombers',this)">bombers</button>
+    <button data-cat="woven" data-soon onclick="filterStore('woven',this)">woven</button>
+    <button data-cat="buttoned" data-soon onclick="filterStore('buttoned',this)">buttoned</button>
+    <button data-cat="headwear" data-soon onclick="filterStore('headwear',this)">caps &amp; hats</button>
+    <button data-cat="beanies" data-soon onclick="filterStore('beanies',this)">beanies</button>
+    <button data-cat="socks" data-soon onclick="filterStore('socks',this)">socks</button>
+    <button data-cat="totes" data-soon onclick="filterStore('totes',this)">tote bags</button>
+    <button data-cat="bags" data-soon onclick="filterStore('bags',this)">shoulder bags</button>
+    <button data-cat="decks" data-soon onclick="filterStore('decks',this)">skate decks</button>
+    <button data-cat="prints" data-soon onclick="filterStore('prints',this)">posters</button>
+    <button data-cat="stickers" data-soon onclick="filterStore('stickers',this)">stickers</button>
+    <button data-cat="accessories" data-soon onclick="filterStore('accessories',this)">accessories</button>
+  </div>
+
+  <div class="product-grid" id="productGrid">
+    <div class="product-card" data-category="tees" data-product-id="anubis-black">
+      <div class="product-img"><img src="./assets/products/anubis-black-front.jpg" alt="Anubis Tee — black, front"></div>
+      <div class="product-name">Anubis Tee</div>
+      <div class="product-variant">black</div>
+      <div class="product-price">GH₵ 250</div>
+    </div>
+    <div class="product-card" data-category="tees" data-product-id="space">
+      <div class="product-img"><img src="./assets/products/space-front.jpg" alt="Space Tee — front"></div>
+      <div class="product-name">Space Tee</div>
+      <div class="product-price">GH₵ 300</div>
+    </div>
+
+    <div class="product-card coming-soon-card" data-category="hoodies">hoodies<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="shorts">shorts<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="joggers">joggers<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="jackets">jackets<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="bombers">bombers<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="woven">woven pieces<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="buttoned">buttoned pieces<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="headwear">caps &amp; hats<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="beanies">beanies<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="socks">socks<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="totes">tote bags<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="bags">shoulder bags<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="decks">skate decks<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="prints">posters &amp; prints<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="stickers">stickers<br>coming soon</div>
+    <div class="product-card coming-soon-card" data-category="accessories">accessories<br>coming soon</div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-logo">360SPRNG</div>
+  <ul>
+    <li><a href="./store.html">store</a></li>
+    <li><a href="./lookbook.html">lookbook</a></li>
+    <li><a href="https://instagram.com/360SPRNG" target="_blank" rel="noopener">instagram</a></li>
+  </ul>
+  <span class="footer-copy">© 2026 360SPRNG</span>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="drawer-scrim" id="cartScrim" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="drawer-head"><span>cart</span><button class="drawer-close" onclick="closeCart()" aria-label="close cart">✕</button></div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">your cart is empty</div>
+  </div>
+  <div class="drawer-foot">
+    <div class="cart-subtotal-row"><span>subtotal</span><span id="cartSubtotal">GH₵ 0</span></div>
+    <button class="btn-pill" id="cartCheckoutBtn" onclick="openCheckout()" disabled>checkout</button>
+  </div>
+</aside>
+
+<!-- PDP OVERLAY -->
+<div class="pdp-overlay" id="pdpOverlay" onclick="closePdpOnOverlay(event)">
+  <div class="pdp-sheet" role="dialog" aria-modal="true">
+    <div class="pdp-close-row"><button onclick="closePdp()" aria-label="close">✕</button></div>
+    <div class="pdp-gallery" id="pdpGallery">
+      <div class="pdp-main-img-wrap">
+        <img id="pdpMainImg" alt="">
+        <div class="pdp-main-ph" id="pdpMainPh"></div>
+      </div>
+      <div class="pdp-thumbs" id="pdpThumbs"></div>
+    </div>
+    <div class="pdp-name" id="pdpName"></div>
+    <div class="pdp-var" id="pdpVar"></div>
+    <div class="pdp-price" id="pdpPrice"></div>
+    <div class="pdp-desc" id="pdpDesc"></div>
+    <div class="pdp-variants" id="pdpVariants"></div>
+    <div class="pdp-sizes-label">size<button id="pdpSizingGuide" onclick="openSizeGuide()">size guide</button></div>
+    <div class="pdp-sizes" id="pdpSizes"></div>
+    <div class="pdp-size-error" id="pdpSizeError">please select a size.</div>
+    <div class="pdp-details" id="pdpDetails"></div>
+    <button class="btn-pill pdp-add-btn" id="pdpAddBtn" onclick="pdpAddToCart()">add to cart</button>
+  </div>
+</div>
+
+<!-- SIZE GUIDE -->
+<div class="size-guide-overlay" id="sizeGuideOverlay" onclick="closeSizeGuideOnOverlay(event)">
+  <div class="size-guide-modal" role="dialog" aria-modal="true">
+    <button style="float:right;background:none;border:none;font-size:18px;" onclick="closeSizeGuide()" aria-label="close">✕</button>
+    <h3 id="sizeGuideProduct"></h3>
+    <p id="sizeGuideNote"></p>
+    <table>
+      <thead><tr id="sizeGuideHead"></tr></thead>
+      <tbody id="sizeGuideBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="checkout-overlay" id="checkoutOverlay" onclick="closeCheckoutOnOverlay(event)">
+  <div class="checkout-modal" role="dialog" aria-modal="true">
+    <div class="checkout-head"><span class="checkout-title">checkout</span><button class="checkout-close" onclick="closeCheckout()" aria-label="close">✕</button></div>
+    <div class="checkout-body">
+      <div class="checkout-section-label">contact</div>
+      <div class="checkout-field"><label>full name</label><input type="text" id="co-name" placeholder="first and last name" autocomplete="name"></div>
+      <div class="checkout-row">
+        <div class="checkout-field"><label>email</label><input type="email" id="co-email" placeholder="your@email.com" autocomplete="email"></div>
+        <div class="checkout-field"><label>phone</label><input type="tel" id="co-phone" placeholder="05X XXX XXXX" autocomplete="tel"></div>
+      </div>
+      <div class="checkout-section-label">shipping address</div>
+      <div class="checkout-field"><label>country</label>
+        <select id="co-country" autocomplete="country" onchange="updateStateLabel()">
+          <optgroup label="— Africa —">
+            <option value="GH" selected>Ghana</option>
+            <option value="NG">Nigeria</option>
+            <option value="CI">Côte d'Ivoire</option>
+            <option value="SN">Senegal</option>
+            <option value="KE">Kenya</option>
+            <option value="ZA">South Africa</option>
+            <option value="ET">Ethiopia</option>
+            <option value="TZ">Tanzania</option>
+            <option value="UG">Uganda</option>
+            <option value="CM">Cameroon</option>
+            <option value="BJ">Benin</option>
+            <option value="TG">Togo</option>
+            <option value="BF">Burkina Faso</option>
+            <option value="ML">Mali</option>
+            <option value="GN">Guinea</option>
+            <option value="SL">Sierra Leone</option>
+            <option value="LR">Liberia</option>
+            <option value="EG">Egypt</option>
+          </optgroup>
+          <optgroup label="— Europe —">
+            <option value="GB">United Kingdom</option>
+            <option value="DE">Germany</option>
+            <option value="FR">France</option>
+            <option value="NL">Netherlands</option>
+            <option value="IT">Italy</option>
+            <option value="ES">Spain</option>
+            <option value="SE">Sweden</option>
+            <option value="NO">Norway</option>
+            <option value="DK">Denmark</option>
+            <option value="BE">Belgium</option>
+            <option value="CH">Switzerland</option>
+            <option value="AT">Austria</option>
+            <option value="PT">Portugal</option>
+            <option value="FI">Finland</option>
+            <option value="IE">Ireland</option>
+          </optgroup>
+          <optgroup label="— North America —">
+            <option value="US">United States</option>
+            <option value="CA">Canada</option>
+            <option value="MX">Mexico</option>
+          </optgroup>
+          <optgroup label="— Other —">
+            <option value="AU">Australia</option>
+            <option value="NZ">New Zealand</option>
+            <option value="AE">United Arab Emirates</option>
+            <option value="JP">Japan</option>
+            <option value="BR">Brazil</option>
+            <option value="CN">China</option>
+            <option value="IN">India</option>
+            <option value="OTHER">Other</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="checkout-field"><label>address line 1</label><input type="text" id="co-addr1" placeholder="street number and street name" autocomplete="address-line1"></div>
+      <div class="checkout-field"><label>address line 2 <span style="opacity:0.4;font-size:0.85em">(optional)</span></label><input type="text" id="co-addr2" placeholder="apartment, suite, unit, building" autocomplete="address-line2"></div>
+      <div class="checkout-row">
+        <div class="checkout-field"><label>city / town</label><input type="text" id="co-city" placeholder="city" autocomplete="address-level2"></div>
+        <div class="checkout-field">
+          <label id="state-label">region</label>
+          <div id="co-region-wrap">
+            <select id="co-region-gh" autocomplete="address-level1" style="display:block">
+              <option value="" disabled selected>select region</option>
+              <option>Ahafo</option><option>Ashanti</option><option>Bono</option><option>Bono East</option>
+              <option>Central</option><option>Eastern</option><option>Greater Accra</option><option>North East</option>
+              <option>Northern</option><option>Oti</option><option>Savannah</option><option>Upper East</option>
+              <option>Upper West</option><option>Volta</option><option>Western</option><option>Western North</option>
+            </select>
+            <input type="text" id="co-region-other" placeholder="state / province / region" autocomplete="address-level1" style="display:none">
+          </div>
+        </div>
+      </div>
+      <div class="checkout-row">
+        <div class="checkout-field"><label>postal / zip code</label><input type="text" id="co-postal" placeholder="postal code" autocomplete="postal-code"></div>
+        <div class="checkout-field" id="digital-addr-wrap"><label>digital address <span style="opacity:0.4;font-size:0.85em">(Ghana only)</span></label><input type="text" id="co-digital" placeholder="e.g. GA-123-4567"></div>
+      </div>
+      <div class="checkout-section-label">delivery notes <span style="opacity:0.4;font-size:0.85em">(optional)</span></div>
+      <div class="checkout-field"><label>special instructions</label><input type="text" id="co-notes" placeholder="nearest landmark, buzzer code, preferred delivery time"></div>
+      <div class="save-profile-row"><input type="checkbox" id="saveProfile" checked><label for="saveProfile">save details for future orders</label></div>
+      <div id="checkoutSummary" class="checkout-order-summary"></div>
+      <div class="checkout-error" id="checkout-error">please fill in your name, email, and shipping address.</div>
+      <button class="btn-pill pay-btn" onclick="initiateCheckout()">pay securely via paystack</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://js.paystack.co/v2/inline.js"></script>
+<script>
+  const TEE_SIZE_GUIDE = {
+    note: 'Measurements are garment dimensions in centimetres, taken flat. Allow a 1–2 cm variance. This tee has an oversized fit; choose your usual size for the intended fit.',
+    columns: ['size', 'chest', 'length', 'sleeve'],
+    rows: [['XS', '55', '67', '20'], ['S', '57', '69', '21'], ['M', '59', '71', '22'], ['L', '61', '73', '23'], ['XL', '63', '75', '24']]
+  };
+  window.STORE_CONFIG = {
+    paystackPublicKey: 'pk_live_fe7b26ed4147c9bf78ffdde8b449d6ce0d8b40f1',
+    currency: 'GHS',
+    products: {
+      'anubis-black': {
+        name: 'Anubis Tee', variant: 'black · beyond .I', price: 250,
+        img: './assets/products/anubis-black-front.jpg',
+        images: ['./assets/products/anubis-black-front.jpg', './assets/products/anubis-black-back.jpg', './assets/products/anubis-black-body-front.png', './assets/products/anubis-black-body-back.png'],
+        imageLabels: ['front', 'back', 'on body — front', 'on body — back'],
+        description: 'Premium heavyweight tee with high-end print',
+        sizeGuide: TEE_SIZE_GUIDE,
+        details: [{ label: 'material', value: '100% Cotton 320gsm' }, { label: 'fit', value: 'Oversized' }, { label: 'print', value: 'Screen-printed' }, { label: 'drop', value: 'Beyond .I — 2026' }, { label: 'care', value: 'Cold wash, hang dry' }],
+        sizes: [{ size: 'XS', soldOut: true }, { size: 'S', soldOut: true }, { size: 'M' }, { size: 'L', soldOut: true }, { size: 'XL', soldOut: true }],
+        colorVariants: [{ label: 'black', productId: 'anubis-black', active: true }, { label: 'white', productId: 'anubis-white' }]
+      },
+      'anubis-white': {
+        name: 'Anubis Tee', variant: 'white · beyond .I', price: 250,
+        img: './assets/products/anubis-white-front.jpg',
+        images: ['./assets/products/anubis-white-front.jpg', './assets/products/anubis-white-back.jpg', './assets/products/anubis-white-body-front.png', './assets/products/anubis-white-body-back.png'],
+        imageLabels: ['front', 'back', 'on body — front', 'on body — back'],
+        description: 'Premium heavyweight tee with high-end print',
+        sizeGuide: TEE_SIZE_GUIDE,
+        details: [{ label: 'material', value: '100% Cotton 320gsm' }, { label: 'fit', value: 'Oversized' }, { label: 'print', value: 'Heat transferred' }, { label: 'drop', value: 'Beyond .I — 2026' }, { label: 'care', value: 'Cold wash, hang dry' }],
+        sizes: [{ size: 'XS', soldOut: true }, { size: 'S', soldOut: true }, { size: 'M' }, { size: 'L', soldOut: true }, { size: 'XL', soldOut: true }],
+        colorVariants: [{ label: 'black', productId: 'anubis-black' }, { label: 'white', productId: 'anubis-white', active: true }]
+      },
+      'space': {
+        name: 'Space Tee', variant: 'beyond .I', price: 300,
+        img: './assets/products/space-front.jpg',
+        images: ['./assets/products/space-front.jpg', './assets/products/space-back.jpg', './assets/products/space-body-front.png', './assets/products/space-body-back.png'],
+        imageLabels: ['front', 'back', 'on body — front', 'on body — back'],
+        description: 'Premium heavyweight tee with high-end print',
+        sizeGuide: TEE_SIZE_GUIDE,
+        details: [{ label: 'material', value: '100% Cotton 320gsm' }, { label: 'fit', value: 'Oversized' }, { label: 'print', value: 'Screen-printed' }, { label: 'drop', value: 'Beyond .I — 2026' }, { label: 'care', value: 'Cold wash, hang dry' }],
+        sizes: [{ size: 'XS', soldOut: true }, { size: 'S', soldOut: true }, { size: 'M' }, { size: 'L', soldOut: true }, { size: 'XL', soldOut: true }],
+        colorVariants: []
+      }
+    }
+  };
+</script>
+<script src="./js/app.js"></script>
+</body>
+</html>
