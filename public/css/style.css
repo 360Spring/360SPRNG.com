@@ -202,7 +202,7 @@ ul { list-style: none; }
    ============================================================ */
 .landing-hero {
   position: relative; min-height: 100vh; min-height: 100dvh;
-  display: flex; align-items: flex-end; justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   background: #ececec;
   overflow: hidden;
 }
@@ -215,7 +215,7 @@ ul { list-style: none; }
   height: 42px; z-index: 2;
 }
 .landing-hero .hero-cta {
-  position: relative; z-index: 2; margin-bottom: 168px;
+  position: relative; z-index: 2;
 }
 .landing-hero .hero-linkbar {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
