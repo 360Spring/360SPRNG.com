@@ -1,16 +1,17 @@
 -- 360SPRNG — D1 schema
--- Run once against a fresh database:
---   wrangler d1 execute 360sprng-orders --remote --file=./schema.sql
+-- Reflects the ACTUAL live "360sprng-orders" schema, pulled directly from
+-- production on 2026-09-09 (previous version of this file was hand-written
+-- and had drifted: no `id` column, `ref` as PRIMARY KEY instead of UNIQUE,
+-- `total` as REAL instead of INTEGER, and neither index below was applied).
 --
--- NOTE: the live repo has no checked-in schema file — this is reconstructed
--- from the column list in the existing _worker.js INSERT statement. If you're
--- pointing this build at the SAME database_id as the live site, you almost
--- certainly already have this table and can skip running this file.
+-- Safe to run against a fresh database — every statement is idempotent:
+--   wrangler d1 execute 360sprng-orders --remote --file=./schema.sql
 
 CREATE TABLE IF NOT EXISTS orders (
-  ref             TEXT PRIMARY KEY,
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  ref             TEXT NOT NULL UNIQUE,
   created_at      TEXT NOT NULL,
-  name            TEXT,
+  name            TEXT NOT NULL,
   email           TEXT NOT NULL,
   phone           TEXT,
   country         TEXT,
@@ -20,8 +21,8 @@ CREATE TABLE IF NOT EXISTS orders (
   postal          TEXT,
   digital_address TEXT,
   notes           TEXT,
-  items           TEXT,
-  total           REAL NOT NULL
+  items           TEXT NOT NULL,
+  total           INTEGER NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders (created_at DESC);
