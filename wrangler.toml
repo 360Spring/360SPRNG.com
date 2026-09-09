@@ -24,7 +24,7 @@
 #    is a real transaction. Swap in a Paystack TEST public key while you're
 #    validating the new build, then swap back before the real cutover.
 
-name = "360sprng-website-next"
+name = "360sprng-website"
 compatibility_date = "2026-04-26"
 main = "./_worker.js"
 compatibility_flags = ["nodejs_compat"]
