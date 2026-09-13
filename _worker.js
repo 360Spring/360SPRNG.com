@@ -24,9 +24,9 @@ const securityHeaders = {
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Content-Security-Policy': [
-    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' https://js.paystack.co https://www.googletagmanager.com https://www.google-analytics.com",
     "script-src 'self' 'unsafe-inline' https://js.paystack.co",
-    "connect-src 'self' https://api.paystack.co https://api.brevo.com",
+    "connect-src 'self' https://api.paystack.co https://api.brevo.com https://www.google-analytics.com https://region1.google-analytics.com",
     "img-src 'self' data: blob:",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' data: https://fonts.gstatic.com",
