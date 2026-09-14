@@ -323,7 +323,8 @@ function initiateCheckout() {
         } catch (e) { /* non-critical */ }
         cart = []; saveCart(); renderCart();
         setPaymentButtonState(false); closeCheckout();
-        showConfirm(orderSaved, name, ref, total);
+        const q = new URLSearchParams({ ref, name, total: String(total), saved: orderSaved ? '1' : '0' });
+        window.location.href = './order-confirmed.html?' + q.toString();
       }
     });
   } catch (error) {
