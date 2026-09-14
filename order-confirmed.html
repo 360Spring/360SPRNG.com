@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed — 360SPRNG</title>
+    <meta name="robots" content="noindex">
+    <link rel="icon" type="image/png" href="./favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9CBTNGBBT2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9CBTNGBBT2');
+    </script>
+</head>
+
+<body>
+    <main class="order-confirmed">
+        <div class="check">✓</div>
+        <h1 id="ocTitle">order confirmed</h1>
+        <div class="oc-meta" id="ocMeta"></div>
+        <p class="oc-note" id="ocNote"></p>
+        <a class="btn-pill" href="./store.html">continue shopping</a>
+    </main>
+    <script>
+        const p = new URLSearchParams(location.search);
+        const saved = p.get('saved') === '1';
+        document.getElementById('ocTitle').textContent = saved ? 'order confirmed' : 'payment received';
+        document.getElementById('ocMeta').innerHTML = `${p.get('name') || ''}<br>ref: ${p.get('ref') || ''}<br>total: GH₵ ${p.get('total') || ''}`;
+        document.getElementById('ocNote').textContent = saved
+            ? "confirmation email on its way. we'll reach out on instagram with dispatch info."
+            : "We're finalizing your order! If you don't hear from us on Instagram within 24 hours, send us a message with the reference number above.";
+    </script>
+</body>
+
+</html>
