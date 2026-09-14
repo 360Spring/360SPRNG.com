@@ -421,7 +421,7 @@ ul {
   min-height: 100vh;
   min-height: 100dvh;
   display: flex;
-  align-items: flex-end;
+  align-items: center; 
   justify-content: center;
   background: #ececec;
   overflow: hidden;
@@ -448,7 +448,6 @@ ul {
 .landing-hero .hero-cta {
   position: relative;
   z-index: 2;
-  margin-bottom: 168px;
 }
 
 .landing-hero .hero-linkbar {
